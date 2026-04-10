@@ -1,0 +1,60 @@
+# ──────────────────────────────────────────────
+# Backend Python / FastAPI
+# ──────────────────────────────────────────────
+
+# Entorno virtual
+backend/.venv/
+backend/venv/
+
+# Base de datos SQLite
+backend/*.db
+
+# Variables de entorno (contienen secretos)
+backend/.env
+
+# Imágenes subidas por usuarios
+backend/media/
+
+# Cache de Python
+backend/**/__pycache__/
+backend/**/*.pyc
+backend/**/*.pyo
+backend/.pytest_cache/
+backend/.mypy_cache/
+
+# ──────────────────────────────────────────────
+# Android
+# ──────────────────────────────────────────────
+
+# Fichero local con la ruta del SDK (específico de cada máquina)
+android/local.properties
+
+# Builds
+android/build/
+android/app/build/
+android/.gradle/
+
+# Google Services (Firebase) — añadir manualmente en cada máquina
+android/app/google-services.json
+
+# Keystores y ficheros de firma
+android/**/*.jks
+android/**/*.keystore
+android/**/*.p12
+
+# IntelliJ / Android Studio
+android/.idea/workspace.xml
+android/.idea/tasks.xml
+android/.idea/navEditor.xml
+android/.idea/assetWizardSettings.xml
+android/.idea/dictionaries
+android/.idea/libraries
+android/.idea/caches
+android/.idea/modules.xml
+android/**/*.iml
+
+# ──────────────────────────────────────────────
+# Sistema operativo
+# ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
