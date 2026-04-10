@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Normas de commits
+
+- **Nunca** incluir `Co-Authored-By: Claude` ni ninguna referencia a Claude en los mensajes de commit.
+
 ## Descripción del proyecto
 
 **VenialboConecta** — Portal de novedades Android para un pueblo. Tres roles de usuario:
