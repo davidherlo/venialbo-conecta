@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24  # 24 horas
     images_dir: str = "media/imagenes"
+    google_client_id: str = ""  # Rellenar en .env con el Client ID de Firebase
 
     class Config:
         env_file = ".env"

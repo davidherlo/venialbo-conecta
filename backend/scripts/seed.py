@@ -12,9 +12,10 @@ from app.database import SessionLocal
 from app.models.categoria import Categoria
 from app.models.usuario import Usuario, Rol
 from app.models.noticia import Noticia
-from passlib.context import CryptContext
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Email de Google del administrador — cámbialo por el tuyo
+ADMIN_EMAIL = "david.panader@gmail.com"
+ADMIN_NOMBRE = "Administrador"
 
 CATEGORIAS = [
     {"nombre": "Cultura", "icono": "🎭", "color": "#9C27B0"},
@@ -84,9 +85,8 @@ def seed():
 
         print("Creando usuario admin...")
         admin = Usuario(
-            nombre="Administrador",
-            email="admin@venialboconecta.local",
-            password_hash=pwd_context.hash("admin1234"),
+            nombre=ADMIN_NOMBRE,
+            email=ADMIN_EMAIL,
             rol=Rol.admin,
         )
         db.add(admin)
@@ -109,7 +109,7 @@ def seed():
         print("✓ Seed completado.")
         print(f"  {len(CATEGORIAS)} categorías")
         print(f"  {len(NOTICIAS_EJEMPLO)} noticias")
-        print("  1 usuario admin  (email: admin@venialboconecta.local | contraseña: admin1234)")
+        print(f"  1 usuario admin  (email: {ADMIN_EMAIL})")
 
     finally:
         db.close()

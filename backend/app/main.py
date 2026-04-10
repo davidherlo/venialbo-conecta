@@ -5,7 +5,7 @@ import os
 from app.config import settings
 from app.database import engine
 from app import models  # noqa: F401 — necesario para que Alembic detecte los modelos
-from app.routers import categorias, noticias
+from app.routers import categorias, noticias, auth
 
 app = FastAPI(
     title=settings.app_name,
@@ -18,6 +18,7 @@ os.makedirs(settings.images_dir, exist_ok=True)
 app.mount("/media", StaticFiles(directory="media"), name="media")
 
 
+app.include_router(auth.router)
 app.include_router(categorias.router)
 app.include_router(noticias.router)
 

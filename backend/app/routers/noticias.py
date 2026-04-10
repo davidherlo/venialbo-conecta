@@ -6,8 +6,10 @@ import aiofiles
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File, status
 from sqlalchemy.orm import Session
 
+from app.auth.dependencies import require_admin
 from app.config import settings
 from app.database import get_db
+from app.models.usuario import Usuario
 from app.schemas.noticia import NoticiaCreate, NoticiaUpdate, NoticiaOut, NoticiaListOut
 from app.crud import noticia as crud
 
@@ -38,13 +40,21 @@ def obtener_noticia(noticia_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/", response_model=NoticiaOut, status_code=status.HTTP_201_CREATED)
-def crear_noticia(data: NoticiaCreate, db: Session = Depends(get_db)):
-    # autor_id=1 es provisional hasta que implementemos autenticación (Fase 3)
-    return crud.create(db, data, autor_id=1)
+def crear_noticia(
+    data: NoticiaCreate,
+    db: Session = Depends(get_db),
+    admin: Usuario = Depends(require_admin),
+):
+    return crud.create(db, data, autor_id=admin.id)
 
 
 @router.put("/{noticia_id}", response_model=NoticiaOut)
-def actualizar_noticia(noticia_id: int, data: NoticiaUpdate, db: Session = Depends(get_db)):
+def actualizar_noticia(
+    noticia_id: int,
+    data: NoticiaUpdate,
+    db: Session = Depends(get_db),
+    _: Usuario = Depends(require_admin),
+):
     noticia = crud.get_by_id(db, noticia_id)
     if not noticia:
         raise HTTPException(status_code=404, detail="Noticia no encontrada")
@@ -52,7 +62,11 @@ def actualizar_noticia(noticia_id: int, data: NoticiaUpdate, db: Session = Depen
 
 
 @router.delete("/{noticia_id}", status_code=status.HTTP_204_NO_CONTENT)
-def eliminar_noticia(noticia_id: int, db: Session = Depends(get_db)):
+def eliminar_noticia(
+    noticia_id: int,
+    db: Session = Depends(get_db),
+    _: Usuario = Depends(require_admin),
+):
     noticia = crud.get_by_id(db, noticia_id)
     if not noticia:
         raise HTTPException(status_code=404, detail="Noticia no encontrada")
@@ -64,6 +78,7 @@ async def subir_imagen(
     noticia_id: int,
     archivo: UploadFile = File(...),
     db: Session = Depends(get_db),
+    _: Usuario = Depends(require_admin),
 ):
     """Sube una imagen y la asocia a la noticia."""
     noticia = crud.get_by_id(db, noticia_id)

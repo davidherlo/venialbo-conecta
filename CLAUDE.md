@@ -45,8 +45,10 @@ python3.11 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 # Arrancar servidor de desarrollo
-# Nota WSL2: usar --host 0.0.0.0 para acceder desde Windows
-.venv/bin/uvicorn app.main:app --reload --port 8000 --host 0.0.0.0
+# IMPORTANTE: el venv tiene Python 3.10 y 3.11 mezclados; los paquetes están en 3.11.
+# Siempre usar python3.11 explícito y matar procesos previos primero.
+pkill -f uvicorn 2>/dev/null; true
+.venv/bin/python3.11 -m uvicorn app.main:app --reload --port 8000 --host 0.0.0.0
 
 # Parar el servidor: Ctrl+C
 

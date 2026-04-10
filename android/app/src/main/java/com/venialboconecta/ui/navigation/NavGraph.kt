@@ -6,12 +6,15 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.venialboconecta.VenialboConectaApp
 import com.venialboconecta.ui.screens.DetalleNoticiaScreen
 import com.venialboconecta.ui.screens.ListaNoticiasScreen
+import com.venialboconecta.ui.screens.LoginScreen
 import com.venialboconecta.ui.screens.SplashScreen
 
 object Rutas {
     const val SPLASH = "splash"
+    const val LOGIN = "login"
     const val LISTA_NOTICIAS = "lista_noticias"
     const val DETALLE_NOTICIA = "detalle_noticia/{noticiaId}"
 
@@ -25,8 +28,20 @@ fun NavGraph(navController: NavHostController) {
         composable(Rutas.SPLASH) {
             SplashScreen(
                 onFinished = {
-                    navController.navigate(Rutas.LISTA_NOTICIAS) {
+                    val destino = if (VenialboConectaApp.sessionManager.isLoggedIn)
+                        Rutas.LISTA_NOTICIAS else Rutas.LOGIN
+                    navController.navigate(destino) {
                         popUpTo(Rutas.SPLASH) { inclusive = true }
+                    }
+                },
+            )
+        }
+
+        composable(Rutas.LOGIN) {
+            LoginScreen(
+                onLoginExitoso = {
+                    navController.navigate(Rutas.LISTA_NOTICIAS) {
+                        popUpTo(Rutas.LOGIN) { inclusive = true }
                     }
                 },
             )

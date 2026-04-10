@@ -18,7 +18,7 @@ class Usuario(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     nombre: Mapped[str] = mapped_column(String(100))
     email: Mapped[str] = mapped_column(String(255), unique=True, index=True)
-    password_hash: Mapped[str] = mapped_column(String(255))
+    password_hash: Mapped[str | None] = mapped_column(String(255), nullable=True)
     rol: Mapped[Rol] = mapped_column(SAEnum(Rol), default=Rol.vecino)
     fecha_registro: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     activo: Mapped[bool] = mapped_column(default=True)

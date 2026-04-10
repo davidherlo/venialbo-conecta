@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 private val inputFormat = DateTimeFormatter.ISO_LOCAL_DATE_TIME
-private val outputFormat = DateTimeFormatter.ofPattern("d 'de' MMMM yyyy", Locale("es", "ES"))
+private val outputFormat = DateTimeFormatter.ofPattern("d 'de' MMMM yyyy", Locale.of("es", "ES"))
 
 fun formatearFecha(fechaIso: String): String {
     return try {
