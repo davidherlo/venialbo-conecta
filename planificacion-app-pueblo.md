@@ -212,7 +212,7 @@ Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son 
 
 ---
 
-### FASE 7 — Tablón de Anuncios Vecinales (~2 sesiones) ✅ COMPLETADA
+### FASE 7 — Tablón de Anuncios Vecinales (~2 sesiones) 🔄 EN PROGRESO
 > **Objetivo:** Permitir a los vecinos publicar anuncios sencillos (mascotas perdidas, compra/venta, objetos perdidos).
 
 - [ ] Modelo `Anuncio` con tipo, imagen opcional, contacto, caducidad
