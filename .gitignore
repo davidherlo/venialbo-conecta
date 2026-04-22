@@ -58,3 +58,6 @@ android/**/*.iml
 # ──────────────────────────────────────────────
 .DS_Store
 Thumbs.db
+
+#Scripts de prueba
+scripts/*
