@@ -2,277 +2,327 @@
 
 ## 1. Visión General
 
-**Nombre provisional:** PuebloApp (personalizable con el nombre de tu pueblo)
+**Nombre provisional:** VenialboConecta
 
-**Objetivo:** Aplicación Android que sirva como portal de información local donde los vecinos puedan consultar noticias, novedades y promociones de los negocios del pueblo.
+**Objetivo:** Aplicación Android que sirva como portal de información local del pueblo. Centraliza noticias, avisos, información turística, directorios de servicios y utilidades para la vida en comunidad.
 
-**Usuarios:**
-- **Vecinos** → Consultan noticias, ven promociones, filtran por categoría
-- **Maintainer (Administrador)** → Publica y gestiona noticias, modera contenido
-- **Negocios locales** → Publican promociones y anuncios de sus establecimientos
+**Usuarios (roles simplificados):**
+- **Vecinos** → Consultan toda la información del pueblo. Es el rol por defecto al registrarse con Google.
+- **Admin (Maintainer)** → Único rol con permisos de escritura. Publica y modera todo el contenido (noticias, negocios, directorios, tablón, etc.).
+
+> **Cambio importante respecto a la versión anterior:** Se elimina el rol de "Negocio". Los negocios ya no publican contenido por sí mismos. El admin mantiene su ficha (información de contacto, horario, enlaces a web/redes) y los vecinos la consultan como un directorio.
 
 ---
 
-## 2. Stack Tecnológico Recomendado
+## 2. Estructura de contenido: Categorías vs. Módulos
 
-### 2.1 App Android — Kotlin + Jetpack Compose
+La app organiza la información en **dos niveles**:
+
+### 2.1 Categorías de noticias
+Etiquetas que clasifican las noticias publicadas por el admin. Todas comparten el mismo modelo de datos (`Noticia`) y aparecen en la misma pantalla con filtro por chips.
+
+| Categoría | Icono | Descripción |
+|---|---|---|
+| Cultura | 🎭 | Exposiciones, conciertos, teatro, eventos culturales |
+| Deportes | ⚽ | Competiciones, actividades deportivas, clubes |
+| Obras | 🏗️ | Obras municipales, arreglos, mejoras urbanas |
+| Fiestas | 🎉 | Fiestas patronales, verbenas, eventos lúdicos |
+| Avisos urgentes | 📢 | Cortes de agua, luz, carretera, alertas meteorológicas |
+| Medio Ambiente | 🌿 | Reciclaje, limpieza, temas medioambientales |
+| Ayuntamiento | 🏛️ | Plenos, bandos municipales, notificaciones oficiales |
+| Religión | ⛪ | Misas, fallecimientos, eventos parroquiales |
+| Infantil / Colegio | 🎒 | Actividades del colegio, extraescolares públicas |
+| Curiosidades | 📖 | Recetas locales, dichos, refranes, historia, nombres de pagos |
+| Asociaciones | 🤝 | AVAE, Coro y otras actividades comunitarias |
+
+### 2.2 Módulos / Secciones propias
+Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son información persistente o herramientas interactivas.
+
+| Módulo | Descripción | Fase |
+|---|---|---|
+| **Directorio de negocios** | Ficha por negocio con contacto, horario y enlaces a web/redes sociales | 4 |
+| **Directorio de servicios** | Servicios médicos, comedor social, bibliobús, venta ambulante (fichas con horarios y contacto) | 5 |
+| **Información turística** | Rutas, puntos de interés, QR con enlaces a blogs/webs/visitas virtuales | 6 |
+| **Tablón de anuncios** | Clasificados vecinales: mascotas perdidas, compra/venta, objetos perdidos | 7 |
+| **Cuestionarios / encuestas** | Participación vecinal en decisiones comunitarias | 8 |
+| **Webcam de eventos** | Retransmisión puntual de eventos (probablemente embed a YouTube Live) | Futuro |
+| **BlaBlaCar local** | Coche compartido entre vecinos | Futuro (riesgo legal/responsabilidad) |
+| **Sección Senior** | Acompañamiento a personas mayores. Requiere análisis previo de privacidad y LOPD | Futuro |
+
+---
+
+## 3. Stack Tecnológico
+
+### 3.1 App Android — Kotlin + Jetpack Compose
 
 | Aspecto | Decisión | Motivo |
 |---|---|---|
 | **Lenguaje** | Kotlin | Lenguaje oficial de Android, moderno y conciso |
-| **UI** | Jetpack Compose | Framework declarativo de Google, más rápido de desarrollar que XML |
+| **UI** | Jetpack Compose | Framework declarativo de Google |
 | **IDE** | Android Studio | Herramienta oficial, gratuita, con emulador integrado |
 | **Mínimo Android** | API 26 (Android 8.0) | Cubre ~95% de dispositivos activos |
 
-> **¿Por qué Kotlin y no Flutter o React Native?** Al ser una app solo para Android (de momento), usar el framework nativo te da mejor rendimiento, acceso directo a todas las APIs de Android y la documentación oficial está pensada para Kotlin. Además, Claude Code trabaja muy bien con Kotlin.
-
-### 2.2 Backend (Servidor) — Python + FastAPI
+### 3.2 Backend — Python + FastAPI
 
 | Aspecto | Decisión | Motivo |
 |---|---|---|
-| **Lenguaje** | Python 3.11+ | Probablemente ya lo conoces, curva de aprendizaje mínima |
-| **Framework** | FastAPI | Rápido, moderno, genera documentación automática (Swagger) |
+| **Lenguaje** | Python 3.11+ | Curva de aprendizaje mínima |
+| **Framework** | FastAPI | Rápido, moderno, Swagger automático |
 | **Base de datos** | SQLite (POC) → PostgreSQL (producción) | SQLite no requiere instalación; PostgreSQL escala mejor |
-| **ORM** | SQLAlchemy + Alembic | Gestión de BD y migraciones sin escribir SQL a mano |
-| **Autenticación** | JWT (JSON Web Tokens) | Estándar ligero para apps móviles |
+| **ORM** | SQLAlchemy + Alembic | Migraciones sin escribir SQL a mano |
+| **Autenticación** | Google OAuth2 + JWT de sesión | Sin gestionar contraseñas |
 | **Almacenamiento de imágenes** | Sistema de archivos local (POC) → S3/Cloudflare R2 (producción) | Simplifica la POC |
 
-### 2.3 Hosting para la POC (tu PC)
+### 3.3 Hosting
 
-| Componente | Herramienta |
-|---|---|
-| **Servidor backend** | Tu PC ejecutando FastAPI con `uvicorn` |
-| **Exponer a red local** | Tu IP local (ej: `192.168.1.XX:8000`) |
-| **Exponer a Internet (opcional)** | Cloudflare Tunnel (gratis) o ngrok |
-| **Base de datos** | SQLite, un solo archivo en tu disco |
+**POC:** Backend en el PC local con `uvicorn`, expuesto por IP local (`192.168.1.XX:8000`) o con Cloudflare Tunnel/ngrok.
 
-### 2.4 Hosting futuro (producción, bajo coste)
-
-| Opción | Coste aprox. | Ideal para |
-|---|---|---|
-| **Oracle Cloud Free Tier** | Gratis permanente | Servidor VPS con 1GB RAM, suficiente para <1.000 usuarios |
-| **Railway / Render** | Gratis con límites / ~5€/mes | Deploy fácil desde GitHub |
-| **VPS básico (Hetzner/Contabo)** | ~4-6€/mes | Control total, más potencia |
-| **Firebase (Google)** | Gratis con cuota generosa | Si prefieres backend-as-a-service |
+**Producción (opciones):** Oracle Cloud Free Tier (gratis), Railway/Render (~5€/mes), VPS Hetzner/Contabo (~4-6€/mes).
 
 ---
 
-## 3. Arquitectura del Sistema
+## 4. Arquitectura del Sistema
 
 ```
 ┌─────────────────┐         HTTPS/JSON          ┌─────────────────────┐
-│                  │  ◄─────────────────────►   │                     │
-│   App Android    │                             │   Backend FastAPI   │
-│   (Kotlin +      │    GET /noticias            │                     │
-│    Compose)      │    GET /categorias           │   ┌───────────┐    │
-│                  │    GET /promociones          │   │  SQLite /  │    │
-│                  │    POST /login               │   │ PostgreSQL │    │
-│                  │    POST /noticias (admin)    │   └───────────┘    │
-│                  │    POST /promociones (nego)  │                     │
-└─────────────────┘                              │   ┌───────────┐    │
-                                                  │   │  Imágenes  │    │
-┌─────────────────┐         HTTPS/JSON           │   │  (local)   │    │
-│  Panel Web Admin │  ◄─────────────────────►   │   └───────────┘    │
-│  (opcional,      │                             │                     │
-│   futuro)        │                             └─────────────────────┘
-└─────────────────┘
+│                 │  ◄─────────────────────►   │                     │
+│   App Android   │                             │   Backend FastAPI   │
+│   (Kotlin +     │    GET /noticias            │                     │
+│    Compose)     │    GET /categorias          │   ┌───────────┐    │
+│                 │    GET /negocios            │   │  SQLite /  │    │
+│                 │    GET /servicios           │   │ PostgreSQL │    │
+│                 │    GET /tablon              │   └───────────┘    │
+│                 │    POST /auth/google        │                     │
+│                 │    POST /* (sólo admin)     │   ┌───────────┐    │
+└─────────────────┘                             │   │  Imágenes  │    │
+                                                 │   │  (local)   │    │
+                                                 │   └───────────┘    │
+                                                 └─────────────────────┘
 ```
 
 ---
 
-## 4. Modelo de Datos (Entidades Principales)
+## 5. Modelo de Datos (Entidades Principales)
 
 ### Usuarios
-- `id`, `nombre`, `email`, `password_hash`, `rol` (vecino | negocio | admin), `fecha_registro`
+- `id`, `nombre`, `email`, `rol` (**vecino** | **admin**), `fecha_registro`
+- Sin `password_hash` (autenticación delegada a Google)
+- **Se elimina el rol `negocio`**
 
 ### Categorías
-- `id`, `nombre` (ej: Cultura, Deportes, Obras, Fiestas, Avisos), `icono`, `color`
+- `id`, `nombre`, `icono`, `color`
 
 ### Noticias
 - `id`, `titulo`, `contenido`, `imagen_url`, `categoria_id`, `autor_id`, `fecha_publicacion`, `destacada` (bool), `activa` (bool)
 
-### Negocios
-- `id`, `nombre`, `descripcion`, `direccion`, `telefono`, `logo_url`, `usuario_id`
+### Negocios (simplificado — solo ficha informativa)
+- `id`, `nombre`, `descripcion`, `direccion`, `telefono`, `email`, `web_url`, `redes_sociales` (JSON: `{facebook, instagram, ...}`), `logo_url`, `horario` (texto libre), `categoria_negocio` (ej: bar, tienda, peluquería)
+- **Sin `usuario_id`** (ya no hay propietario que publique)
 
-### Promociones
-- `id`, `negocio_id`, `titulo`, `descripcion`, `imagen_url`, `fecha_inicio`, `fecha_fin`, `activa` (bool)
+### Servicios (directorio municipal)
+- `id`, `nombre`, `tipo` (médico | comedor | bibliobús | venta_ambulante | otro), `descripcion`, `direccion`, `telefono`, `horario`, `informacion_adicional`
+
+### Anuncios (tablón vecinal)
+- `id`, `tipo` (mascota_perdida | compra_venta | objeto_perdido | otro), `titulo`, `descripcion`, `imagen_url`, `contacto`, `autor_id`, `fecha_publicacion`, `activo`, `fecha_caducidad`
+
+### Encuestas (cuestionarios vecinales)
+- `id`, `pregunta`, `opciones` (JSON), `fecha_inicio`, `fecha_fin`, `activa`
+- `Voto`: `id`, `encuesta_id`, `usuario_id`, `opcion_elegida`
+
+### Puntos turísticos
+- `id`, `nombre`, `descripcion`, `tipo` (ruta | edificio | lugar_interes), `imagen_url`, `coordenadas`, `enlace_externo`, `codigo_qr`
+
+> **Se elimina la entidad `Promocion`** — los negocios ya no publican promociones.
 
 ---
 
-## 5. Fases de Desarrollo
+## 6. Fases de Desarrollo
 
 ### FASE 0 — Preparación del Entorno ✅ COMPLETADA
-> **Objetivo:** Tener todo instalado y listo para codear.
 
-- [x] Instalar Android Studio en tu PC
-- [x] Instalar Python 3.11+ y crear un entorno virtual
-- [x] Crear la estructura de carpetas del proyecto (`backend/` + `android/`)
-- [x] Configurar Git para control de versiones
-- [x] Verificar que el emulador de Android funciona
+- [x] Android Studio, Python 3.11+, estructura de carpetas, Git
 
 ---
 
 ### FASE 1 — Backend: API Básica de Noticias ✅ COMPLETADA
-> **Objetivo:** Tener una API funcional que sirva noticias por categoría.
 
-- [x] Modelos de BD: Categoría y Noticia (+ Usuario, Negocio, Promoción ya definidos)
-- [x] Migraciones con Alembic (`alembic/versions/029202671dda_tablas_iniciales.py`)
-- [x] Endpoints CRUD de categorías (`GET`, `POST`, `PUT`, `DELETE`)
-- [x] Endpoints CRUD de noticias con filtros: categoría, búsqueda por título, destacadas, paginación (`skip`/`limit`)
-- [x] Seed de datos de ejemplo (`scripts/seed.py`)
-- [x] Subida de imágenes para noticias (`POST /noticias/{id}/imagen`, servidas en `/media`)
-- [x] Documentación automática en `/docs` (Swagger)
-- [x] Health check en `/health`
-
-> **Nota:** Los endpoints de escritura aceptan `autor_id=1` de forma provisional hasta implementar la autenticación en Fase 3.
-
-**Entregable:** ✅ API corriendo en `localhost:8000` con datos de prueba.
+- [x] Modelos BD: Categoría y Noticia
+- [x] Migraciones con Alembic
+- [x] Endpoints CRUD de categorías y noticias (con filtros y paginación)
+- [x] Seed de datos de ejemplo
+- [x] Subida de imágenes
+- [x] Swagger en `/docs`, health check en `/health`
 
 ---
 
 ### FASE 2 — App Android: Pantalla de Noticias ✅ COMPLETADA
-> **Objetivo:** App que muestre las noticias del backend.
 
 - [x] Proyecto Android con Kotlin + Jetpack Compose
-- [x] Configurar Retrofit para llamadas HTTP al backend (`RetrofitClient`, `VenialboApiService`)
-- [x] DTOs para Noticia y Categoría (`NoticiaDto`, `CategoriaDto`)
-- [x] Repositorio de datos (`NoticiaRepository`)
-- [x] ViewModels con `StateFlow` (`ListaNoticiasViewModel`, `DetalleNoticiaViewModel`)
-- [x] Pantalla principal: lista de noticias con imagen, título y fecha (`ListaNoticiasScreen`)
-- [x] Pantalla de detalle de noticia con imagen completa y contenido (`DetalleNoticiaScreen`)
-- [x] Filtro por categorías (chips horizontales desplazables)
-- [x] Barra de búsqueda por texto en tiempo real _(extra respecto al plan)_
-- [x] Paginación infinita: carga más noticias al llegar al final de la lista _(extra)_
-- [x] Botón de compartir noticia vía Intent del sistema _(extra)_
-- [x] Splash screen de bienvenida (`SplashScreen`)
-- [x] Navegación con Navigation Compose (`NavGraph`)
-- [x] Manejo de estados: cargando, error con botón de reintento, lista vacía
-- [x] Diseño con Material 3 (tema de colores, tipografía personalizada)
-
-**Entregable:** ✅ App funcional que lee noticias del backend en tu PC.
+- [x] Retrofit + DTOs + Repository + ViewModels con `StateFlow`
+- [x] Lista de noticias, detalle, filtro por categorías, búsqueda, paginación infinita, compartir, splash screen, navegación, Material 3
 
 ---
 
-### FASE 3 — Autenticación con Google y Control de Roles (~2 sesiones)
-> **Objetivo:** Que cada tipo de usuario entre con su cuenta de Google y tenga su nivel de acceso.
+### FASE 3 — Autenticación con Google y Control de Roles ✅ COMPLETADA
 
-**Backend:**
-- [ ] Añadir dependencia `google-auth` a `requirements.txt`
-- [ ] Crear endpoint `POST /auth/google` que recibe el ID Token de Google, lo verifica contra Google y devuelve un JWT propio de sesión
-- [ ] Completar el módulo `app/auth/` con: verificación del token Google, generación de JWT de sesión, y dependency de FastAPI para proteger rutas (`get_current_user`)
-- [ ] Middleware de autorización por rol (`require_admin`, `require_negocio`)
-- [ ] Proteger endpoints de escritura (noticias y categorías: solo admin)
-- [ ] Seed inicial: registrar tu email de Google con `rol = admin` en `scripts/seed.py`
-
-**App Android:**
-- [ ] Configurar proyecto en Firebase Console y descargar `google-services.json`
-- [ ] Añadir dependencias: Firebase Auth + Credential Manager (Google Sign-In)
-- [ ] Pantalla de login con botón "Entrar con Google"
-- [ ] Al hacer login, enviar el ID Token al backend y guardar el JWT de sesión de forma segura (`EncryptedSharedPreferences`)
-- [ ] Cerrar sesión (borrar token almacenado)
-- [ ] Mostrar u ocultar opciones de la UI según el rol recibido del backend
-
-> **Nota sobre roles:** El primer login con una cuenta desconocida crea automáticamente un usuario con `rol = vecino`. El admin cambia roles manualmente (en BD o vía endpoint protegido) hasta que haya panel de administración (Fase futura).
-
-**Entregable:** Login con Google funcional; los endpoints de escritura quedan protegidos y solo accesibles para admin.
+- [x] Login con Google (Firebase Auth + Credential Manager)
+- [x] Verificación del ID Token en backend (`google-auth`)
+- [x] JWT de sesión propio (HS256) con `sub` y `rol`
+- [x] `EncryptedSharedPreferences` (AES256-GCM) para el token
+- [x] Endpoints de escritura protegidos con `require_admin`
+- [x] Registro automático como `vecino` al primer login
 
 ---
 
-### FASE 4 — Módulo de Negocios y Promociones (~2-3 sesiones)
-> **Objetivo:** Los negocios pueden publicar sus promociones.
+### FASE 4 — Ampliar categorías y refactor del modelo de datos (~1-2 sesiones) ✅ COMPLETADA
+> **Objetivo:** Alinear el modelo de datos con la nueva visión antes de seguir añadiendo funcionalidad.
 
-- [ ] Modelos de BD: Negocio y Promoción
-- [ ] Endpoints CRUD de negocios y promociones
-- [ ] Pantalla en la app: sección "Negocios del Pueblo"
-- [ ] Ficha de cada negocio con sus datos y promociones activas
-- [ ] Pantalla para que el negocio publique/edite sus promociones
-- [ ] Fecha de caducidad automática de promociones
+- [x] Migración: añadir 5 categorías nuevas (Ayuntamiento, Religión, Infantil/Colegio, Curiosidades, Asociaciones)
+- [x] Renombrar categoría "Avisos" → "Avisos urgentes"
+- [x] Migración: eliminar rol `negocio` de `Usuario` (reasignado a `vecino`)
+- [x] Migración: eliminar entidad `Promocion` y sus referencias
+- [x] Actualizar seed con las nuevas categorías (11 en total)
+- [x] Chips de categorías en Android: dinámicos desde la API, sin cambios necesarios
 
-**Entregable:** Sección completa de negocios con promociones visibles.
+**Entregable:** Modelo de datos limpio y alineado con la nueva visión.
 
 ---
 
-### FASE 5 — Notificaciones Push (~1-2 sesiones)
-> **Objetivo:** Avisar a los vecinos cuando haya noticias importantes.
+### FASE 5 — Directorio de Negocios (~2 sesiones) ⬜ PENDIENTE
+> **Objetivo:** Sección de negocios como directorio de consulta (sin publicación por parte del negocio).
 
-- [ ] Integrar Firebase Cloud Messaging (FCM) — gratuito
-- [ ] Registro del dispositivo para recibir notificaciones
+- [ ] Refactor modelo `Negocio`: añadir `web_url`, `redes_sociales`, `horario`, `categoria_negocio`; eliminar `usuario_id`
+- [ ] Endpoints CRUD de negocios (escritura solo admin)
+- [ ] Pantalla "Negocios del Pueblo" con lista + filtro por tipo
+- [ ] Ficha de negocio: información completa + botones para llamar / abrir web / abrir redes sociales
+
+**Entregable:** Directorio de negocios navegable.
+
+---
+
+### FASE 6 — Directorio de Servicios (~1-2 sesiones) ⬜ PENDIENTE
+> **Objetivo:** Información práctica sobre servicios del pueblo.
+
+- [ ] Modelo `Servicio` con tipos: médico, comedor social, bibliobús, venta ambulante, otro
+- [ ] Endpoints CRUD
+- [ ] Pantalla con tabs o agrupación por tipo
+- [ ] Ficha con horario, contacto, información adicional (ej. menú del comedor)
+
+**Entregable:** Los vecinos consultan horarios y contactos de todos los servicios desde la app.
+
+---
+
+### FASE 7 — Tablón de Anuncios Vecinales (~2 sesiones) ⬜ PENDIENTE
+> **Objetivo:** Permitir a los vecinos publicar anuncios sencillos (mascotas perdidas, compra/venta, objetos perdidos).
+
+- [ ] Modelo `Anuncio` con tipo, imagen opcional, contacto, caducidad
+- [ ] Endpoints: vecinos pueden crear anuncios; admin puede moderar/eliminar
+- [ ] Pantalla de listado con filtro por tipo
+- [ ] Formulario de publicación
+- [ ] Caducidad automática (por defecto 30 días)
+
+> **Decisión pendiente:** ¿moderación previa (el admin aprueba) o reactiva (se publica y el admin retira si procede)? Reactiva es más ágil para MVP.
+
+**Entregable:** Tablón vecinal funcionando con moderación del admin.
+
+---
+
+### FASE 8 — Notificaciones Push (~1-2 sesiones) ⬜ PENDIENTE
+> **Objetivo:** Avisar a los vecinos cuando haya noticias o avisos urgentes.
+
+- [ ] Integrar Firebase Cloud Messaging (FCM)
+- [ ] Registro del dispositivo al hacer login
 - [ ] El admin puede enviar notificación al publicar noticia destacada
-- [ ] Notificaciones por categoría (suscripción por temas)
+- [ ] Suscripción por temas (categorías), con prioridad automática para "Avisos urgentes"
 
-**Entregable:** Los vecinos reciben notificaciones de noticias destacadas.
+**Entregable:** Los vecinos reciben notificaciones relevantes.
 
 ---
 
-### FASE 6 — Pulido y Preparación para Producción (~2 sesiones)
+### FASE 9 — Información Turística (~2-3 sesiones) ⬜ PENDIENTE
+> **Objetivo:** Rutas, edificios y lugares de interés con enlaces externos.
+
+- [ ] Modelo `PuntoTuristico` con coordenadas y enlaces
+- [ ] Generación de códigos QR por punto (se imprimen y colocan in situ)
+- [ ] Pantalla con mapa (Google Maps o alternativa OSM) y fichas
+- [ ] Integración con escáner QR en la app (opcional)
+
+**Entregable:** Guía turística básica con QR.
+
+---
+
+### FASE 10 — Cuestionarios / Encuestas Vecinales (~1-2 sesiones) ⬜ PENDIENTE
+> **Objetivo:** Participación de los vecinos en decisiones comunitarias.
+
+- [ ] Modelo `Encuesta` y `Voto` (un voto por usuario por encuesta)
+- [ ] Endpoints para crear (admin) y votar (vecinos autenticados)
+- [ ] Pantalla de encuestas activas con resultados tras votar
+- [ ] Notificación push al abrir una encuesta nueva
+
+**Entregable:** Vecinos pueden participar en votaciones no vinculantes desde la app.
+
+---
+
+### FASE 11 — Pulido y Preparación para Producción (~2 sesiones) ⬜ PENDIENTE
 > **Objetivo:** App lista para que la use gente real.
 
-- [ ] Diseño final: logo, colores del pueblo, splash screen
-- [ ] Manejo de errores y mensajes al usuario
-- [ ] Caché offline (leer noticias sin conexión)
+- [ ] Diseño final: logo, colores, splash screen
+- [ ] Caché offline
 - [ ] Migrar backend a servidor externo (Oracle Free / VPS)
-- [ ] Migrar BD de SQLite a PostgreSQL
-- [ ] Configurar HTTPS con certificado SSL
-- [ ] Pruebas con 5-10 vecinos beta
+- [ ] Migrar BD a PostgreSQL
+- [ ] HTTPS con certificado SSL
+- [ ] Pruebas con vecinos beta
 - [ ] Publicar en Google Play Store (~25$ pago único)
 
 **Entregable:** App publicada y backend en servidor accesible.
 
 ---
 
-## 6. Fases Futuras (Post-lanzamiento)
+## 7. Fases Futuras (Post-lanzamiento)
 
-Estas fases son opcionales y se pueden abordar según las necesidades del pueblo:
+Funcionalidades aplazadas por complejidad, coste o riesgo legal:
 
-- **Panel web de administración** — Para que el admin gestione contenido desde el navegador sin necesidad de la app
-- **Calendario de eventos** — Fiestas, mercadillos, reuniones vecinales
-- **Sección de avisos municipales** — Cortes de agua, obras, censos
-- **Versión iOS** — Si hay demanda, considerar migrar a multiplataforma (Kotlin Multiplatform o Flutter)
-- **Sistema de comentarios** — Los vecinos pueden opinar en las noticias
-- **Directorio de servicios** — Fontaneros, electricistas, farmacias, etc.
-- **Alertas meteorológicas** — Integración con AEMET
-- **Multi-idioma** — Si el pueblo tiene lengua cooficial
+- **Webcam de eventos** — Mejor resuelto con un enlace a YouTube Live durante el evento, que desarrollar streaming propio.
+- **BlaBlaCar local** — Requiere análisis de responsabilidad civil y cobertura de seguros. No es trivial legalmente.
+- **Sección Senior** — Funcionalidad social sensible (personas que viven solas, acompañamientos). Necesita análisis de privacidad, LOPD y protocolo con servicios sociales antes de implementar.
+- **Panel web de administración** — Para gestionar contenido desde el navegador sin la app.
+- **Calendario unificado** — Vista agregada de fiestas, eventos, plenos.
+- **Sistema de comentarios** en noticias.
+- **Alertas meteorológicas** automáticas (integración AEMET).
+- **Multi-idioma**.
+- **Versión iOS** (Kotlin Multiplatform o Flutter).
 
 ---
 
-## 7. Herramientas y Recursos
+## 8. Herramientas y Recursos
 
-| Recurso | Enlace / Descripción |
+| Recurso | Enlace |
 |---|---|
-| **Android Studio** | https://developer.android.com/studio — IDE oficial |
-| **Kotlin Docs** | https://kotlinlang.org/docs/home.html |
-| **Jetpack Compose** | https://developer.android.com/jetpack/compose |
-| **FastAPI** | https://fastapi.tiangolo.com |
-| **Material 3** | https://m3.material.io — Sistema de diseño de Google |
-| **Firebase (FCM)** | https://firebase.google.com/docs/cloud-messaging |
-| **Google Play Console** | https://play.google.com/console — Para publicar la app |
+| Android Studio | https://developer.android.com/studio |
+| Kotlin Docs | https://kotlinlang.org/docs/home.html |
+| Jetpack Compose | https://developer.android.com/jetpack/compose |
+| FastAPI | https://fastapi.tiangolo.com |
+| Material 3 | https://m3.material.io |
+| Firebase (FCM) | https://firebase.google.com/docs/cloud-messaging |
+| Google Play Console | https://play.google.com/console |
 
 ---
 
-## 8. Flujo de Trabajo con Claude Code
-
-Cada fase se traduce en 1-3 sesiones con Claude Code. El flujo recomendado es:
-
-1. **Copiar el bloque de tareas** de la fase correspondiente
-2. **Pedir a Claude Code** que genere el código paso a paso
-3. **Probar** en tu entorno local (emulador + backend en tu PC)
-4. **Iterar** pidiendo correcciones o mejoras
-5. **Commitear** en Git antes de pasar a la siguiente fase
-
-> **Consejo:** No intentes hacer todo de golpe. Cada fase es independiente y funcional por sí sola. Así puedes probar y validar antes de avanzar.
-
----
-
-## 9. Resumen de Tiempos Estimados
+## 9. Resumen del Roadmap
 
 | Fase | Descripción | Estado |
 |---|---|---|
 | 0 | Preparación del entorno | ✅ Completada |
 | 1 | Backend: API de noticias | ✅ Completada |
-| 2 | App Android: pantalla de noticias | ✅ Completada |
-| 3 | Autenticación y roles | ⬜ Pendiente |
-| 4 | Negocios y promociones | ⬜ Pendiente |
-| 5 | Notificaciones push | ⬜ Pendiente |
-| 6 | Pulido y producción | ⬜ Pendiente |
+| 2 | App Android: noticias | ✅ Completada |
+| 3 | Autenticación Google + roles | ✅ Completada |
+| 4 | Ampliar categorías + refactor modelo | ✅ Completada |
+| 5 | Directorio de negocios (sin publicación) | ⬜ Pendiente |
+| 6 | Directorio de servicios | ⬜ Pendiente |
+| 7 | Tablón de anuncios vecinales | ⬜ Pendiente |
+| 8 | Notificaciones push | ⬜ Pendiente |
+| 9 | Información turística + QR | ⬜ Pendiente |
+| 10 | Cuestionarios / encuestas | ⬜ Pendiente |
+| 11 | Pulido y producción | ⬜ Pendiente |
 
-> **POC funcional (fases 0-2): completada.** Siguiente hito: Fase 3 (autenticación JWT).
+> **Siguiente paso:** Fase 5 — directorio de negocios (ficha informativa con contacto, horario y enlaces).
