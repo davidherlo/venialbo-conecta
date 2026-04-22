@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Newspaper
 import androidx.compose.material.icons.filled.Store
+import androidx.compose.material.icons.filled.MedicalServices
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 fun MainScreen(
     onNoticiaClick: (Int) -> Unit,
     onNegocioClick: (Int) -> Unit,
+    onServicioClick: (Int) -> Unit,
 ) {
     var tabSeleccionado by rememberSaveable { mutableIntStateOf(0) }
 
@@ -54,6 +56,12 @@ fun MainScreen(
                     icon = { Icon(Icons.Filled.Store, contentDescription = null) },
                     label = { Text("Negocios") },
                 )
+                NavigationBarItem(
+                    selected = tabSeleccionado == 2,
+                    onClick = { tabSeleccionado = 2 },
+                    icon = { Icon(Icons.Filled.MedicalServices, contentDescription = null) },
+                    label = { Text("Servicios") },
+                )
             }
         },
     ) { padding ->
@@ -65,6 +73,7 @@ fun MainScreen(
             when (tabSeleccionado) {
                 0 -> ListaNoticiasScreen(onNoticiaClick = onNoticiaClick)
                 1 -> ListaNegociosScreen(onNegocioClick = onNegocioClick)
+                2 -> ListaServiciosScreen(onServicioClick = onServicioClick)
             }
         }
     }

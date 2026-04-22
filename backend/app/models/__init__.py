@@ -3,3 +3,4 @@ from app.models.usuario import Usuario
 from app.models.categoria import Categoria
 from app.models.noticia import Noticia
 from app.models.negocio import Negocio
+from app.models.servicio import Servicio

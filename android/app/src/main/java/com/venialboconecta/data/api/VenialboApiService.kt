@@ -3,6 +3,7 @@ package com.venialboconecta.data.api
 import com.venialboconecta.data.api.dto.DevLoginRequest
 import com.venialboconecta.data.api.dto.GoogleLoginRequest
 import com.venialboconecta.data.api.dto.NegocioDto
+import com.venialboconecta.data.api.dto.ServicioDto
 import com.venialboconecta.data.api.dto.TokenResponse
 import com.venialboconecta.data.api.dto.CategoriaDto
 import com.venialboconecta.data.api.dto.NoticiaDetalleDto
@@ -44,4 +45,10 @@ interface VenialboApiService {
 
     @GET("negocios/{id}")
     suspend fun getNegocio(@Path("id") id: Int): NegocioDto
+
+    @GET("servicios/")
+    suspend fun getServicios(@Query("tipo") tipo: String? = null): List<ServicioDto>
+
+    @GET("servicios/{id}")
+    suspend fun getServicio(@Path("id") id: Int): ServicioDto
 }

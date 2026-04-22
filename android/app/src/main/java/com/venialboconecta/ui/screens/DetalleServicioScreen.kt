@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -15,11 +14,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Schedule
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,7 +24,6 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -43,15 +38,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.venialboconecta.ui.components.InfoRow
-import com.venialboconecta.viewmodel.DetalleNegocioViewModel
+import com.venialboconecta.viewmodel.DetalleServicioViewModel
+import com.venialboconecta.viewmodel.TIPOS_SERVICIO
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetalleNegocioScreen(
-    negocioId: Int,
+fun DetalleServicioScreen(
+    servicioId: Int,
     onBack: () -> Unit,
-    viewModel: DetalleNegocioViewModel = viewModel(
-        factory = DetalleNegocioViewModel.Factory(negocioId),
+    viewModel: DetalleServicioViewModel = viewModel(
+        factory = DetalleServicioViewModel.Factory(servicioId),
     ),
 ) {
     val state by viewModel.uiState.collectAsState()
@@ -60,7 +56,7 @@ fun DetalleNegocioScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(state.negocio?.nombre ?: "Negocio") },
+                title = { Text(state.servicio?.nombre ?: "Servicio") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Volver")
@@ -93,8 +89,8 @@ fun DetalleNegocioScreen(
                 TextButton(onClick = { viewModel.cargar() }) { Text("Reintentar") }
             }
 
-            state.negocio != null -> {
-                val negocio = state.negocio!!
+            state.servicio != null -> {
+                val servicio = state.servicio!!
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
@@ -103,82 +99,45 @@ fun DetalleNegocioScreen(
                         .padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    if (negocio.categoriaNegocio != null) {
-                        Text(
-                            text = negocio.categoriaNegocio,
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                    }
+                    Text(
+                        text = TIPOS_SERVICIO.firstOrNull { it.first == servicio.tipo }?.second ?: servicio.tipo,
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
 
-                    if (negocio.descripcion != null) {
-                        Text(
-                            text = negocio.descripcion,
-                            style = MaterialTheme.typography.bodyLarge,
-                        )
+                    if (servicio.descripcion != null) {
+                        Text(servicio.descripcion, style = MaterialTheme.typography.bodyLarge)
                     }
 
                     HorizontalDivider()
 
-                    // Dirección y horario
-                    if (negocio.direccion != null) {
-                        InfoRow(icono = { Icon(Icons.Filled.Share, null, Modifier.size(18.dp)) }, texto = negocio.direccion)
+                    if (servicio.direccion != null) {
+                        InfoRow(icono = { Icon(Icons.Filled.Schedule, null, Modifier.size(18.dp)) }, texto = servicio.direccion)
                     }
-                    if (negocio.horario != null) {
-                        InfoRow(icono = { Icon(Icons.Filled.Schedule, null, Modifier.size(18.dp)) }, texto = negocio.horario)
+                    if (servicio.horario != null) {
+                        InfoRow(icono = { Icon(Icons.Filled.Schedule, null, Modifier.size(18.dp)) }, texto = servicio.horario)
+                    }
+                    if (servicio.informacionAdicional != null) {
+                        HorizontalDivider()
+                        Text(
+                            text = "Información adicional",
+                            style = MaterialTheme.typography.titleSmall,
+                        )
+                        Text(servicio.informacionAdicional, style = MaterialTheme.typography.bodyMedium)
                     }
 
-                    Spacer(Modifier.height(4.dp))
+                    Spacer(Modifier.size(4.dp))
 
-                    // Botones de acción
-                    if (negocio.telefono != null) {
+                    if (servicio.telefono != null) {
                         Button(
                             onClick = {
-                                context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${negocio.telefono}")))
+                                context.startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${servicio.telefono}")))
                             },
                             modifier = Modifier.fillMaxWidth(),
                         ) {
                             Icon(Icons.Filled.Phone, contentDescription = null, modifier = Modifier.size(18.dp))
                             Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                            Text("Llamar · ${negocio.telefono}")
-                        }
-                    }
-
-                    if (negocio.email != null) {
-                        OutlinedButton(
-                            onClick = {
-                                context.startActivity(Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:${negocio.email}")))
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Icon(Icons.Filled.Email, contentDescription = null, modifier = Modifier.size(18.dp))
-                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                            Text("Enviar email")
-                        }
-                    }
-
-                    if (negocio.webUrl != null) {
-                        OutlinedButton(
-                            onClick = {
-                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(negocio.webUrl)))
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Icon(Icons.Filled.Language, contentDescription = null, modifier = Modifier.size(18.dp))
-                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                            Text("Abrir web")
-                        }
-                    }
-
-                    // Redes sociales
-                    negocio.redesSociales?.forEach { (red, url) ->
-                        OutlinedButton(
-                            onClick = {
-                                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Text(red.replaceFirstChar { it.uppercase() })
+                            Text("Llamar · ${servicio.telefono}")
                         }
                     }
                 }
@@ -186,4 +145,3 @@ fun DetalleNegocioScreen(
         }
     }
 }
-
