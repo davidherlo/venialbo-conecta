@@ -16,17 +16,13 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -42,7 +38,6 @@ import com.venialboconecta.ui.components.CategoriaChip
 import com.venialboconecta.ui.components.NoticiaCard
 import com.venialboconecta.viewmodel.ListaNoticiasViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaNoticiasScreen(
     onNoticiaClick: (Int) -> Unit,
@@ -51,7 +46,6 @@ fun ListaNoticiasScreen(
     val state by viewModel.uiState.collectAsState()
     val listState = rememberLazyListState()
 
-    // Detectar cuando el usuario llega al final de la lista
     val debeCargarMas by remember {
         derivedStateOf {
             val lastVisible = listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
@@ -65,22 +59,7 @@ fun ListaNoticiasScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("VenialboConecta") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                ),
-            )
-        },
-    ) { padding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding),
-        ) {
+    Box(modifier = Modifier.fillMaxSize()) {
             when {
                 state.cargando && state.noticias.isEmpty() -> {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
@@ -200,5 +179,4 @@ fun ListaNoticiasScreen(
                 }
             }
         }
-    }
 }

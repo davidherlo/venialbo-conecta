@@ -59,16 +59,25 @@ def login_dev(body: DevLoginRequest, db: Session = Depends(get_db)):
     if not settings.dev_mode:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
 
+    from app.models.usuario import Rol as RolEnum
     usuario, _ = crud.get_or_create(db, email=body.email, nombre=body.nombre)
 
     if not usuario.activo:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Cuenta desactivada")
 
-    token = crear_token({"sub": str(usuario.id), "rol": body.rol})
+    try:
+        rol_enum = RolEnum(body.rol)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=f"Rol inválido: {body.rol}")
+
+    usuario.rol = rol_enum
+    db.commit()
+
+    token = crear_token({"sub": str(usuario.id), "rol": rol_enum.value})
 
     return TokenResponse(
         access_token=token,
-        rol=body.rol,
+        rol=rol_enum,
         nombre=usuario.nombre,
         email=usuario.email,
     )
