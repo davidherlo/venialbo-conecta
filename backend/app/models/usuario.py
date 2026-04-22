@@ -8,7 +8,6 @@ from app.database import Base
 
 class Rol(str, enum.Enum):
     vecino = "vecino"
-    negocio = "negocio"
     admin = "admin"
 
 

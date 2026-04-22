@@ -18,12 +18,17 @@ ADMIN_EMAIL = "david.panader@gmail.com"
 ADMIN_NOMBRE = "Administrador"
 
 CATEGORIAS = [
-    {"nombre": "Cultura", "icono": "🎭", "color": "#9C27B0"},
-    {"nombre": "Deportes", "icono": "⚽", "color": "#4CAF50"},
-    {"nombre": "Obras", "icono": "🏗️", "color": "#FF9800"},
-    {"nombre": "Fiestas", "icono": "🎉", "color": "#E91E63"},
-    {"nombre": "Avisos", "icono": "📢", "color": "#F44336"},
-    {"nombre": "Medio Ambiente", "icono": "🌿", "color": "#8BC34A"},
+    {"nombre": "Cultura",           "icono": "🎭", "color": "#9C27B0"},
+    {"nombre": "Deportes",          "icono": "⚽", "color": "#4CAF50"},
+    {"nombre": "Obras",             "icono": "🏗️", "color": "#FF9800"},
+    {"nombre": "Fiestas",           "icono": "🎉", "color": "#E91E63"},
+    {"nombre": "Avisos urgentes",   "icono": "📢", "color": "#F44336"},
+    {"nombre": "Medio Ambiente",    "icono": "🌿", "color": "#8BC34A"},
+    {"nombre": "Ayuntamiento",      "icono": "🏛️", "color": "#607D8B"},
+    {"nombre": "Religión",          "icono": "⛪",  "color": "#795548"},
+    {"nombre": "Infantil / Colegio","icono": "🎒", "color": "#00BCD4"},
+    {"nombre": "Curiosidades",      "icono": "📖", "color": "#FF5722"},
+    {"nombre": "Asociaciones",      "icono": "🤝", "color": "#3F51B5"},
 ]
 
 NOTICIAS_EJEMPLO = [
@@ -55,7 +60,7 @@ NOTICIAS_EJEMPLO = [
         "titulo": "Corte de agua el jueves por mantenimiento",
         "contenido": "El jueves entre las 9:00 y las 14:00 habrá un corte de suministro de agua en el barrio norte por trabajos de mantenimiento preventivo en la red.",
         "destacada": False,
-        "categoria_nombre": "Avisos",
+        "categoria_nombre": "Avisos urgentes",
     },
     {
         "titulo": "Nueva zona de reciclaje en el parque central",

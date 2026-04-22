@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.auth.google import verificar_token_google
 from app.auth.jwt import crear_token
+from app.config import settings
 from app.crud import usuario as crud
 from app.database import get_db
 from app.schemas.auth import GoogleLoginRequest, TokenResponse
@@ -40,6 +42,33 @@ def login_google(body: GoogleLoginRequest, db: Session = Depends(get_db)):
     return TokenResponse(
         access_token=token,
         rol=usuario.rol,
+        nombre=usuario.nombre,
+        email=usuario.email,
+    )
+
+
+class DevLoginRequest(BaseModel):
+    email: str
+    nombre: str
+    rol: str = "vecino"
+
+
+@router.post("/dev-login", response_model=TokenResponse, include_in_schema=False)
+def login_dev(body: DevLoginRequest, db: Session = Depends(get_db)):
+    """Bypass de Google solo disponible con DEV_MODE=True. No incluir en producción."""
+    if not settings.dev_mode:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Not found")
+
+    usuario, _ = crud.get_or_create(db, email=body.email, nombre=body.nombre)
+
+    if not usuario.activo:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Cuenta desactivada")
+
+    token = crear_token({"sub": str(usuario.id), "rol": body.rol})
+
+    return TokenResponse(
+        access_token=token,
+        rol=body.rol,
         nombre=usuario.nombre,
         email=usuario.email,
     )

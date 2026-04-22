@@ -55,6 +55,21 @@ fun LoginScreen(onLoginExitoso: () -> Unit) {
         if (uiState is LoginUiState.Loading) {
             CircularProgressIndicator()
         } else {
+            // DEV: botones de acceso rápido sin Google — eliminar antes de producción
+            Button(
+                onClick = { viewModel.loginDev("vecino@dev.local", "Vecino Dev", "vecino") },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("[DEV] Entrar como vecino")
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedButton(
+                onClick = { viewModel.loginDev("admin@dev.local", "Admin Dev", "admin") },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text("[DEV] Entrar como admin")
+            }
+            Spacer(modifier = Modifier.height(24.dp))
             Button(
                 onClick = {
                     scope.launch {

@@ -33,4 +33,13 @@ class LoginViewModel : ViewModel() {
                 .onFailure { _uiState.value = LoginUiState.Error(it.message ?: "Error desconocido") }
         }
     }
+
+    fun loginDev(email: String, nombre: String, rol: String) {
+        _uiState.value = LoginUiState.Loading
+        viewModelScope.launch {
+            repository.loginDev(email, nombre, rol)
+                .onSuccess { _uiState.value = LoginUiState.Success }
+                .onFailure { _uiState.value = LoginUiState.Error(it.message ?: "Error desconocido") }
+        }
+    }
 }

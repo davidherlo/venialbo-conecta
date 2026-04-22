@@ -1,5 +1,6 @@
 package com.venialboconecta.data.api
 
+import com.venialboconecta.data.api.dto.DevLoginRequest
 import com.venialboconecta.data.api.dto.GoogleLoginRequest
 import com.venialboconecta.data.api.dto.TokenResponse
 import com.venialboconecta.data.api.dto.CategoriaDto
@@ -15,6 +16,9 @@ interface VenialboApiService {
 
     @POST("auth/google")
     suspend fun loginGoogle(@Body body: GoogleLoginRequest): TokenResponse
+
+    @POST("auth/dev-login")
+    suspend fun loginDev(@Body body: DevLoginRequest): TokenResponse
 
     @GET("categorias/")
     suspend fun getCategorias(): List<CategoriaDto>

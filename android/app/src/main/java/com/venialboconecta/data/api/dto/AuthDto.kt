@@ -4,6 +4,12 @@ data class GoogleLoginRequest(
     val id_token: String,
 )
 
+data class DevLoginRequest(
+    val email: String,
+    val nombre: String,
+    val rol: String,
+)
+
 data class TokenResponse(
     val access_token: String,
     val token_type: String,

@@ -9,6 +9,7 @@ class Settings(BaseSettings):
     access_token_expire_minutes: int = 60 * 24  # 24 horas
     images_dir: str = "media/imagenes"
     google_client_id: str = ""  # Rellenar en .env con el Client ID de Firebase
+    dev_mode: bool = True  # PONER A False ANTES DE PRODUCCIÓN — habilita /auth/dev-login sin Google
 
     class Config:
         env_file = ".env"
