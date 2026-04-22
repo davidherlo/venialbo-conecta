@@ -215,13 +215,13 @@ Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son 
 ### FASE 7 — Tablón de Anuncios Vecinales (~2 sesiones) 🔄 EN PROGRESO
 > **Objetivo:** Permitir a los vecinos publicar anuncios sencillos (mascotas perdidas, compra/venta, objetos perdidos).
 
-- [ ] Modelo `Anuncio` con tipo, imagen opcional, contacto, caducidad
-- [ ] Endpoints: vecinos pueden crear anuncios; admin puede moderar/eliminar
+- [x] Modelo `Anuncio` con tipo, imagen opcional, contacto, caducidad
+- [x] Endpoints: vecinos pueden crear anuncios; autor o admin puede editar/eliminar
 - [ ] Pantalla de listado con filtro por tipo
 - [ ] Formulario de publicación
-- [ ] Caducidad automática (por defecto 30 días)
+- [x] Caducidad automática (por defecto 30 días)
 
-> **Decisión pendiente:** ¿moderación previa (el admin aprueba) o reactiva (se publica y el admin retira si procede)? Reactiva es más ágil para MVP.
+> **Decisión tomada:** moderación reactiva — el anuncio se publica directamente y el admin retira si procede.
 
 **Entregable:** Tablón vecinal funcionando con moderación del admin.
 
@@ -319,7 +319,7 @@ Funcionalidades aplazadas por complejidad, coste o riesgo legal:
 | 4 | Ampliar categorías + refactor modelo | ✅ Completada |
 | 5 | Directorio de negocios (sin publicación) | ✅ Completada |
 | 6 | Directorio de servicios | ✅ Completada |
-| 7 | Tablón de anuncios vecinales | ⬜ Pendiente |
+| 7 | Tablón de anuncios vecinales | 🔄 En progreso (backend hecho) |
 | 8 | Notificaciones push | ⬜ Pendiente |
 | 9 | Información turística + QR | ⬜ Pendiente |
 | 10 | Cuestionarios / encuestas | ⬜ Pendiente |

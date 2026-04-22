@@ -8,10 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Descripción del proyecto
 
-**VenialboConecta** — Portal de novedades Android para un pueblo. Tres roles de usuario:
-- **Vecinos** — Consultan noticias, filtran por categoría, ven promociones de negocios
-- **Admin (Maintainer)** — Publica y modera contenido
-- **Negocios** — Publican promociones de sus establecimientos
+**VenialboConecta** — Portal de novedades Android para un pueblo. Dos roles de usuario:
+- **Vecinos** — Consultan noticias, directorios (negocios, servicios), tablón de anuncios, información turística, etc. Pueden publicar anuncios vecinales (según fase). Rol por defecto tras login con Google.
+- **Admin (Maintainer)** — Único rol con permisos de escritura sobre el contenido principal (noticias, negocios, servicios, encuestas, moderación del tablón).
+
+> **Nota:** El rol "Negocio" fue eliminado. Los negocios aparecen como fichas de directorio (información + enlaces a web/redes), pero no publican contenido por sí mismos.
 
 El plan completo está en `planificacion-app-pueblo.md`.
 
@@ -137,24 +138,40 @@ venialbo-app/
 
 | Entidad | Campos principales |
 |---|---|
-| **Usuario** | id, nombre, email, password_hash, rol (vecino\|negocio\|admin) |
+| **Usuario** | id, nombre, email, rol (vecino\|admin), fecha_registro. Sin `password_hash` (login con Google). |
 | **Categoria** | id, nombre, icono, color |
 | **Noticia** | id, titulo, contenido, imagen_url, categoria_id, autor_id, fecha_publicacion, destacada, activa |
-| **Negocio** | id, nombre, descripcion, direccion, telefono, logo_url, usuario_id |
-| **Promocion** | id, negocio_id, titulo, descripcion, imagen_url, fecha_inicio, fecha_fin, activa |
+| **Negocio** | id, nombre, descripcion, direccion, telefono, email, web_url, redes_sociales (JSON), logo_url, horario, categoria_negocio |
+| **Servicio** | id, nombre, tipo (médico\|comedor\|bibliobús\|venta_ambulante\|otro), descripcion, direccion, telefono, horario, informacion_adicional |
+| **Anuncio** | id, tipo (mascota_perdida\|compra_venta\|objeto_perdido\|otro), titulo, descripcion, imagen_url, contacto, autor_id, fecha_publicacion, activo, fecha_caducidad |
+| **Encuesta** | id, pregunta, opciones (JSON), fecha_inicio, fecha_fin, activa |
+| **Voto** | id, encuesta_id, usuario_id, opcion_elegida |
+| **PuntoTuristico** | id, nombre, descripcion, tipo (ruta\|edificio\|lugar_interes), imagen_url, coordenadas, enlace_externo, codigo_qr |
+
+> **Entidades actuales en BD (Fase 3):** solo `Usuario`, `Categoria` y `Noticia`. El resto se irán añadiendo en fases posteriores según el roadmap.
+>
+> **Eliminada:** la entidad `Promocion` — los negocios ya no publican promociones.
+
+### Categorías de noticias (11 previstas tras Fase 4)
+Cultura, Deportes, Obras, Fiestas, Avisos urgentes, Medio Ambiente, Ayuntamiento, Religión, Infantil/Colegio, Curiosidades, Asociaciones.
 
 ---
 
 ## Fases de desarrollo
 
-| Fase | Objetivo |
-|---|---|
-| 0 | Preparación del entorno |
-| 1 | API REST del backend para noticias (CRUD + subida de imágenes + Swagger) |
-| 2 | App Android: lista de noticias + detalle + filtro por categoría |
-| 3 | Autenticación con JWT y control de acceso por rol |
-| 4 | Perfiles de negocios y promociones |
-| 5 | Notificaciones push con Firebase Cloud Messaging (FCM) |
-| 6 | Pulido + despliegue en producción (PostgreSQL, HTTPS, Play Store) |
+| Fase | Objetivo | Estado |
+|---|---|---|
+| 0 | Preparación del entorno | ✅ |
+| 1 | API REST del backend para noticias (CRUD + subida de imágenes + Swagger) | ✅ |
+| 2 | App Android: lista de noticias + detalle + filtro por categoría | ✅ |
+| 3 | Autenticación con Google + JWT + control de acceso por rol | ✅ |
+| 4 | Ampliar categorías + refactor del modelo (eliminar rol negocio y entidad Promocion) | ✅ |
+| 5 | Directorio de negocios (solo consulta, enlaces a web/redes) | ✅ |
+| 6 | Directorio de servicios (médicos, comedor, bibliobús, venta ambulante) | ✅ |
+| 7 | Tablón de anuncios vecinales | 🔄 (backend hecho, Android pendiente) |
+| 8 | Notificaciones push con Firebase Cloud Messaging (FCM) | ⬜ |
+| 9 | Información turística + códigos QR | ⬜ |
+| 10 | Cuestionarios / encuestas vecinales | ⬜ |
+| 11 | Pulido + despliegue en producción (PostgreSQL, HTTPS, Play Store) | ⬜ |
 
-La MVP (fases 0–2) es el primer hito funcional.
+Fases aplazadas (post-lanzamiento): webcam de eventos, BlaBlaCar local, Sección Senior, panel web de administración.
