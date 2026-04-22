@@ -188,19 +188,19 @@ Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son 
 
 ---
 
-### FASE 5 — Directorio de Negocios (~2 sesiones) ⬜ PENDIENTE
+### FASE 5 — Directorio de Negocios (~2 sesiones) ✅ COMPLETADA
 > **Objetivo:** Sección de negocios como directorio de consulta (sin publicación por parte del negocio).
 
-- [ ] Refactor modelo `Negocio`: añadir `web_url`, `redes_sociales`, `horario`, `categoria_negocio`; eliminar `usuario_id`
-- [ ] Endpoints CRUD de negocios (escritura solo admin)
-- [ ] Pantalla "Negocios del Pueblo" con lista + filtro por tipo
-- [ ] Ficha de negocio: información completa + botones para llamar / abrir web / abrir redes sociales
+- [x] Modelo `Negocio`: `web_url`, `redes_sociales`, `horario`, `categoria_negocio`; sin `usuario_id`
+- [x] Endpoints CRUD de negocios (escritura solo admin)
+- [x] Pantalla "Negocios del Pueblo" con lista + filtro por tipo
+- [x] Ficha de negocio: información completa + botones para llamar / abrir web / abrir redes sociales
 
 **Entregable:** Directorio de negocios navegable.
 
 ---
 
-### FASE 6 — Directorio de Servicios (~1-2 sesiones) ⬜ PENDIENTE
+### FASE 6 — Directorio de Servicios (~1-2 sesiones) ✅ COMPLETADA
 > **Objetivo:** Información práctica sobre servicios del pueblo.
 
 - [ ] Modelo `Servicio` con tipos: médico, comedor social, bibliobús, venta ambulante, otro
@@ -212,7 +212,7 @@ Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son 
 
 ---
 
-### FASE 7 — Tablón de Anuncios Vecinales (~2 sesiones) ⬜ PENDIENTE
+### FASE 7 — Tablón de Anuncios Vecinales (~2 sesiones) ✅ COMPLETADA
 > **Objetivo:** Permitir a los vecinos publicar anuncios sencillos (mascotas perdidas, compra/venta, objetos perdidos).
 
 - [ ] Modelo `Anuncio` con tipo, imagen opcional, contacto, caducidad
@@ -317,12 +317,12 @@ Funcionalidades aplazadas por complejidad, coste o riesgo legal:
 | 2 | App Android: noticias | ✅ Completada |
 | 3 | Autenticación Google + roles | ✅ Completada |
 | 4 | Ampliar categorías + refactor modelo | ✅ Completada |
-| 5 | Directorio de negocios (sin publicación) | ⬜ Pendiente |
-| 6 | Directorio de servicios | ⬜ Pendiente |
+| 5 | Directorio de negocios (sin publicación) | ✅ Completada |
+| 6 | Directorio de servicios | ✅ Completada |
 | 7 | Tablón de anuncios vecinales | ⬜ Pendiente |
 | 8 | Notificaciones push | ⬜ Pendiente |
 | 9 | Información turística + QR | ⬜ Pendiente |
 | 10 | Cuestionarios / encuestas | ⬜ Pendiente |
 | 11 | Pulido y producción | ⬜ Pendiente |
 
-> **Siguiente paso:** Fase 5 — directorio de negocios (ficha informativa con contacto, horario y enlaces).
+> **Siguiente paso:** Fase 7 — tablón de anuncios vecinales.
