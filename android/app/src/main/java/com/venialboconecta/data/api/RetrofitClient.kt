@@ -1,6 +1,7 @@
 package com.venialboconecta.data.api
 
 import com.venialboconecta.BuildConfig
+import com.venialboconecta.VenialboConectaApp
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -13,6 +14,17 @@ object RetrofitClient {
         OkHttpClient.Builder()
             .connectTimeout(15, TimeUnit.SECONDS)
             .readTimeout(15, TimeUnit.SECONDS)
+            .addInterceptor { chain ->
+                val token = VenialboConectaApp.sessionManager.token
+                val request = if (token != null) {
+                    chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $token")
+                        .build()
+                } else {
+                    chain.request()
+                }
+                chain.proceed(request)
+            }
             .addInterceptor(
                 HttpLoggingInterceptor().apply {
                     level = if (BuildConfig.DEBUG)

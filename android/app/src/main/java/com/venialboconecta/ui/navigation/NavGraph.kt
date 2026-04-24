@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.venialboconecta.VenialboConectaApp
+import com.venialboconecta.ui.screens.DetalleAnuncioScreen
 import com.venialboconecta.ui.screens.DetalleNegocioScreen
 import com.venialboconecta.ui.screens.DetalleNoticiaScreen
 import com.venialboconecta.ui.screens.DetalleServicioScreen
@@ -21,10 +22,12 @@ object Rutas {
     const val DETALLE_NOTICIA = "detalle_noticia/{noticiaId}"
     const val DETALLE_NEGOCIO = "detalle_negocio/{negocioId}"
     const val DETALLE_SERVICIO = "detalle_servicio/{servicioId}"
+    const val DETALLE_ANUNCIO = "detalle_anuncio/{anuncioId}"
 
     fun detalleNoticia(id: Int) = "detalle_noticia/$id"
     fun detalleNegocio(id: Int) = "detalle_negocio/$id"
     fun detalleServicio(id: Int) = "detalle_servicio/$id"
+    fun detalleAnuncio(id: Int) = "detalle_anuncio/$id"
 }
 
 @Composable
@@ -58,6 +61,7 @@ fun NavGraph(navController: NavHostController) {
                 onNoticiaClick = { id -> navController.navigate(Rutas.detalleNoticia(id)) },
                 onNegocioClick = { id -> navController.navigate(Rutas.detalleNegocio(id)) },
                 onServicioClick = { id -> navController.navigate(Rutas.detalleServicio(id)) },
+                onAnuncioClick = { id -> navController.navigate(Rutas.detalleAnuncio(id)) },
             )
         }
 
@@ -90,6 +94,17 @@ fun NavGraph(navController: NavHostController) {
             val servicioId = backStackEntry.arguments?.getInt("servicioId") ?: return@composable
             DetalleServicioScreen(
                 servicioId = servicioId,
+                onBack = { navController.popBackStack() },
+            )
+        }
+
+        composable(
+            route = Rutas.DETALLE_ANUNCIO,
+            arguments = listOf(navArgument("anuncioId") { type = NavType.IntType }),
+        ) { backStackEntry ->
+            val anuncioId = backStackEntry.arguments?.getInt("anuncioId") ?: return@composable
+            DetalleAnuncioScreen(
+                anuncioId = anuncioId,
                 onBack = { navController.popBackStack() },
             )
         }

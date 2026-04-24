@@ -212,13 +212,13 @@ Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son 
 
 ---
 
-### FASE 7 — Tablón de Anuncios Vecinales (~2 sesiones) 🔄 EN PROGRESO
+### FASE 7 — Tablón de Anuncios Vecinales (~2 sesiones) ✅ COMPLETADA
 > **Objetivo:** Permitir a los vecinos publicar anuncios sencillos (mascotas perdidas, compra/venta, objetos perdidos).
 
 - [x] Modelo `Anuncio` con tipo, imagen opcional, contacto, caducidad
 - [x] Endpoints: vecinos pueden crear anuncios; autor o admin puede editar/eliminar
-- [ ] Pantalla de listado con filtro por tipo
-- [ ] Formulario de publicación
+- [x] Pantalla de listado con filtro por tipo
+- [x] Formulario de publicación
 - [x] Caducidad automática (por defecto 30 días)
 
 > **Decisión tomada:** moderación reactiva — el anuncio se publica directamente y el admin retira si procede.
@@ -227,13 +227,14 @@ Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son 
 
 ---
 
-### FASE 8 — Notificaciones Push (~1-2 sesiones) ⬜ PENDIENTE
+### FASE 8 — Notificaciones Push (~1-2 sesiones) ✅ COMPLETADA
 > **Objetivo:** Avisar a los vecinos cuando haya noticias o avisos urgentes.
 
-- [ ] Integrar Firebase Cloud Messaging (FCM)
-- [ ] Registro del dispositivo al hacer login
-- [ ] El admin puede enviar notificación al publicar noticia destacada
-- [ ] Suscripción por temas (categorías), con prioridad automática para "Avisos urgentes"
+- [x] Integrar Firebase Cloud Messaging (FCM) — Firebase Admin SDK en backend
+- [x] Suscripción automática a topics al arrancar la app (`noticias_destacadas`, `avisos_urgentes`)
+- [x] El backend envía notificación al publicar noticia destacada o de categoría urgente
+- [x] Canal de notificaciones Android con prioridad alta (`venialbo_noticias`)
+- [x] Credenciales del service account vía variable de entorno en producción
 
 **Entregable:** Los vecinos reciben notificaciones relevantes.
 
@@ -263,7 +264,22 @@ Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son 
 
 ---
 
-### FASE 11 — Pulido y Preparación para Producción (~2 sesiones) ⬜ PENDIENTE
+### FASE 11 — Pantalla de Perfil y Ajustes (~1 sesión) ⬜ PENDIENTE
+> **Objetivo:** El vecino puede ver con qué cuenta ha iniciado sesión y cerrar sesión. Sienta las bases para futuros ajustes (idioma, notificaciones, etc.).
+
+- [ ] Nueva pestaña "Perfil" en la barra de navegación (icono `Person`)
+- [ ] Mostrar nombre y email de la cuenta Google con la que se accedió (guardados en `SessionManager`)
+- [ ] Botón de cerrar sesión: limpia el token, redirige a `LoginScreen`
+- [ ] Sección "Ajustes" con estructura preparada para futuras opciones:
+  - Selector de idioma (interfaz — esqueleto sin implementar)
+  - Preferencias de notificaciones (esqueleto sin implementar)
+- [ ] Sin cambios en el backend (todo es local en el cliente)
+
+**Entregable:** El usuario puede identificar su cuenta y hacer logout desde la app.
+
+---
+
+### FASE 12 — Pulido y Preparación para Producción (~2 sesiones) ⬜ PENDIENTE
 > **Objetivo:** App lista para que la use gente real.
 
 - [ ] Diseño final: logo, colores, splash screen
@@ -273,6 +289,7 @@ Funcionalidades con su propio modelo de datos y pantallas. No son noticias, son 
 - [ ] HTTPS con certificado SSL
 - [ ] Pruebas con vecinos beta
 - [ ] Publicar en Google Play Store (~25$ pago único)
+- [ ] Eliminar botones `[DEV]` y `dev_mode` de `LoginScreen`
 
 **Entregable:** App publicada y backend en servidor accesible.
 
@@ -319,10 +336,11 @@ Funcionalidades aplazadas por complejidad, coste o riesgo legal:
 | 4 | Ampliar categorías + refactor modelo | ✅ Completada |
 | 5 | Directorio de negocios (sin publicación) | ✅ Completada |
 | 6 | Directorio de servicios | ✅ Completada |
-| 7 | Tablón de anuncios vecinales | 🔄 En progreso (backend hecho) |
-| 8 | Notificaciones push | ⬜ Pendiente |
+| 7 | Tablón de anuncios vecinales | ✅ Completada |
+| 8 | Notificaciones push | ✅ Completada |
 | 9 | Información turística + QR | ⬜ Pendiente |
 | 10 | Cuestionarios / encuestas | ⬜ Pendiente |
-| 11 | Pulido y producción | ⬜ Pendiente |
+| 11 | Pantalla de perfil y ajustes (logout, cuenta, idioma futuro) | ⬜ Pendiente |
+| 12 | Pulido y producción | ⬜ Pendiente |
 
-> **Siguiente paso:** Fase 7 — tablón de anuncios vecinales.
+> **Siguiente paso:** Fase 9 — información turística + códigos QR.

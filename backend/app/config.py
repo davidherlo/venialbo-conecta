@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     images_dir: str = "media/imagenes"
     google_client_id: str = ""  # Rellenar en .env con el Client ID de Firebase
     dev_mode: bool = True  # PONER A False ANTES DE PRODUCCIÓN — habilita /auth/dev-login sin Google
+    firebase_service_account: str = "firebase-service-account.json"  # Clave de servicio Firebase Admin SDK
 
     class Config:
         env_file = ".env"

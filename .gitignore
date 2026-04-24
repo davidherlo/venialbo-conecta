@@ -12,6 +12,9 @@ backend/*.db
 # Variables de entorno (contienen secretos)
 backend/.env
 
+# Clave de servicio Firebase Admin SDK (contiene clave privada)
+backend/firebase-service-account.json
+
 # Imágenes subidas por usuarios
 backend/media/
 

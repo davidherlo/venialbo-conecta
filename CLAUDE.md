@@ -168,10 +168,11 @@ Cultura, Deportes, Obras, Fiestas, Avisos urgentes, Medio Ambiente, Ayuntamiento
 | 4 | Ampliar categorías + refactor del modelo (eliminar rol negocio y entidad Promocion) | ✅ |
 | 5 | Directorio de negocios (solo consulta, enlaces a web/redes) | ✅ |
 | 6 | Directorio de servicios (médicos, comedor, bibliobús, venta ambulante) | ✅ |
-| 7 | Tablón de anuncios vecinales | 🔄 (backend hecho, Android pendiente) |
-| 8 | Notificaciones push con Firebase Cloud Messaging (FCM) | ⬜ |
+| 7 | Tablón de anuncios vecinales | ✅ |
+| 8 | Notificaciones push con Firebase Cloud Messaging (FCM) | ✅ |
 | 9 | Información turística + códigos QR | ⬜ |
 | 10 | Cuestionarios / encuestas vecinales | ⬜ |
-| 11 | Pulido + despliegue en producción (PostgreSQL, HTTPS, Play Store) | ⬜ |
+| 11 | Pantalla de perfil y ajustes (logout, cuenta Google, base para idioma) | ⬜ |
+| 12 | Pulido + despliegue en producción (PostgreSQL, HTTPS, Play Store) | ⬜ |
 
 Fases aplazadas (post-lanzamiento): webcam de eventos, BlaBlaCar local, Sección Senior, panel web de administración.

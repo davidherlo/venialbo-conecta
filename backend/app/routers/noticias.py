@@ -9,9 +9,11 @@ from sqlalchemy.orm import Session
 from app.auth.dependencies import require_admin
 from app.config import settings
 from app.database import get_db
+from app.models.categoria import Categoria
 from app.models.usuario import Usuario
 from app.schemas.noticia import NoticiaCreate, NoticiaUpdate, NoticiaOut, NoticiaListOut
 from app.crud import noticia as crud
+from app import firebase_client
 
 router = APIRouter(prefix="/noticias", tags=["noticias"])
 
@@ -45,7 +47,26 @@ def crear_noticia(
     db: Session = Depends(get_db),
     admin: Usuario = Depends(require_admin),
 ):
-    return crud.create(db, data, autor_id=admin.id)
+    noticia = crud.create(db, data, autor_id=admin.id)
+    _notificar(db, noticia)
+    return noticia
+
+
+def _notificar(db: Session, noticia) -> None:
+    cat = db.query(Categoria).filter(Categoria.id == noticia.categoria_id).first()
+    es_urgente = cat and "urgente" in (cat.nombre or "").lower()
+    if es_urgente:
+        firebase_client.send_to_topic(
+            topic="avisos_urgentes",
+            title=f"⚠️ {noticia.titulo}",
+            body=(noticia.contenido or "")[:120],
+        )
+    elif noticia.destacada:
+        firebase_client.send_to_topic(
+            topic="noticias_destacadas",
+            title=noticia.titulo,
+            body=(noticia.contenido or "")[:120],
+        )
 
 
 @router.put("/{noticia_id}", response_model=NoticiaOut)
