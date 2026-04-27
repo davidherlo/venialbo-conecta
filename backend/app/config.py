@@ -11,6 +11,10 @@ class Settings(BaseSettings):
     google_client_id: str = ""  # Rellenar en .env con el Client ID de Firebase
     dev_mode: bool = True  # PONER A False ANTES DE PRODUCCIÓN — habilita /auth/dev-login sin Google
     firebase_service_account: str = "firebase-service-account.json"  # Clave de servicio Firebase Admin SDK
+    cors_origins: list[str] = [
+        "http://localhost:5173",  # Vite dev server (frontend web)
+        "http://localhost:3000",  # alternativa si se cambia el puerto
+    ]
 
     class Config:
         env_file = ".env"
