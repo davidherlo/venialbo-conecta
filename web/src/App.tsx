@@ -1,6 +1,6 @@
-import { Refine } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { useNotificationProvider } from "@refinedev/antd";
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { ConfigProvider } from "antd";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
@@ -8,6 +8,7 @@ import "antd/dist/reset.css";
 import { venialboDataProvider } from "./providers/dataProvider";
 import { venialboAuthProvider } from "./providers/authProvider";
 import { API_URL } from "./config";
+
 import { PublicLayout } from "./public/layout/PublicLayout";
 import { Home } from "./public/pages/Home";
 import { NoticiasList } from "./public/pages/noticias/NoticiasList";
@@ -18,6 +19,10 @@ import { ServiciosList } from "./public/pages/servicios/ServiciosList";
 import { ServiciosShow } from "./public/pages/servicios/ServiciosShow";
 import { AnunciosList } from "./public/pages/anuncios/AnunciosList";
 import { AnunciosShow } from "./public/pages/anuncios/AnunciosShow";
+
+import { LoginPage } from "./admin/LoginPage";
+import { AdminLayout } from "./admin/layout/AdminLayout";
+import { Dashboard } from "./admin/pages/Dashboard";
 
 function App() {
   return (
@@ -30,6 +35,7 @@ function App() {
           options={{ disableTelemetry: true }}
         >
           <Routes>
+            {/* Zona pública */}
             <Route element={<PublicLayout />}>
               <Route path="/" element={<Home />} />
               <Route path="/noticias" element={<NoticiasList />} />
@@ -40,6 +46,23 @@ function App() {
               <Route path="/servicios/:id" element={<ServiciosShow />} />
               <Route path="/tablon" element={<AnunciosList />} />
               <Route path="/tablon/:id" element={<AnunciosShow />} />
+            </Route>
+
+            {/* Zona admin */}
+            <Route path="/admin/login" element={<LoginPage />} />
+            <Route
+              path="/admin"
+              element={
+                <Authenticated
+                  key="admin-zone"
+                  fallback={<Navigate to="/admin/login" replace />}
+                >
+                  <AdminLayout />
+                </Authenticated>
+              }
+            >
+              <Route index element={<Dashboard />} />
+              {/* Paso 7+: CRUD de recursos */}
             </Route>
           </Routes>
         </Refine>
