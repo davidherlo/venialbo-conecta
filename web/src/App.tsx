@@ -26,6 +26,17 @@ import { Dashboard } from "./admin/pages/Dashboard";
 import { NoticiasList as AdminNoticiasList } from "./admin/pages/noticias/NoticiasList";
 import { NoticiasCreate } from "./admin/pages/noticias/NoticiasCreate";
 import { NoticiasEdit } from "./admin/pages/noticias/NoticiasEdit";
+import { NegociosList as AdminNegociosList } from "./admin/pages/negocios/NegociosList";
+import { NegociosCreate } from "./admin/pages/negocios/NegociosCreate";
+import { NegociosEdit } from "./admin/pages/negocios/NegociosEdit";
+import { ServiciosList as AdminServiciosList } from "./admin/pages/servicios/ServiciosList";
+import { ServiciosCreate } from "./admin/pages/servicios/ServiciosCreate";
+import { ServiciosEdit } from "./admin/pages/servicios/ServiciosEdit";
+import { AnunciosList as AdminAnunciosList } from "./admin/pages/anuncios/AnunciosList";
+import { AnunciosEdit } from "./admin/pages/anuncios/AnunciosEdit";
+import { CategoriasList } from "./admin/pages/categorias/CategoriasList";
+import { CategoriasCreate } from "./admin/pages/categorias/CategoriasCreate";
+import { CategoriasEdit } from "./admin/pages/categorias/CategoriasEdit";
 
 function App() {
   return (
@@ -68,6 +79,17 @@ function App() {
               <Route path="noticias" element={<AdminNoticiasList />} />
               <Route path="noticias/nuevo" element={<NoticiasCreate />} />
               <Route path="noticias/:id/editar" element={<NoticiasEdit />} />
+              <Route path="negocios" element={<AdminNegociosList />} />
+              <Route path="negocios/nuevo" element={<NegociosCreate />} />
+              <Route path="negocios/:id/editar" element={<NegociosEdit />} />
+              <Route path="servicios" element={<AdminServiciosList />} />
+              <Route path="servicios/nuevo" element={<ServiciosCreate />} />
+              <Route path="servicios/:id/editar" element={<ServiciosEdit />} />
+              <Route path="anuncios" element={<AdminAnunciosList />} />
+              <Route path="anuncios/:id/editar" element={<AnunciosEdit />} />
+              <Route path="categorias" element={<CategoriasList />} />
+              <Route path="categorias/nuevo" element={<CategoriasCreate />} />
+              <Route path="categorias/:id/editar" element={<CategoriasEdit />} />
             </Route>
           </Routes>
         </Refine>

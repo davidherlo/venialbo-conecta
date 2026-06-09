@@ -194,8 +194,8 @@ Cada paso es independiente; podemos parar en el 7 para validar la experiencia an
 | 5. Zona pública mobile-first | ✅ Completado |
 | 6. Login admin + AdminLayout | ✅ Completado |
 | 7. CRUD Noticias | ✅ Completado |
-| 8. CRUD Negocios/Servicios/Anuncios/Categorías | ⬜ Siguiente |
+| 8. CRUD Negocios/Servicios/Anuncios/Categorías | ✅ Completado |
 | 9. ImageUploader | ✅ Completado |
-| 10. Pulido + deploy | ⬜ |
+| 10. Pulido + deploy | ⬜ Siguiente |
 
-> Última actualización: 2026-06-09 — pasos 7 y 9 completados
+> Última actualización: 2026-06-09 — pasos 7, 8 y 9 completados — panel admin completo
