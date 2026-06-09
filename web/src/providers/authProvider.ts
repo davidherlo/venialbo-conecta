@@ -66,6 +66,13 @@ export const venialboAuthProvider = (apiUrl: string): AuthProvider => ({
         JSON.stringify({ email: data.email, nombre: data.nombre, rol: data.rol }),
       );
 
+      if (data.rol !== "admin") {
+        return {
+          success: false,
+          error: { name: "SinPermisos", message: "Solo los administradores pueden acceder al panel." },
+        };
+      }
+
       return { success: true, redirectTo: "/admin" };
     } catch (e) {
       return {
@@ -86,6 +93,11 @@ export const venialboAuthProvider = (apiUrl: string): AuthProvider => ({
   check: async () => {
     const token = localStorage.getItem(TOKEN_STORAGE_KEY);
     if (!token) {
+      return { authenticated: false, redirectTo: "/admin/login" };
+    }
+    const identity = readIdentity();
+    if (identity?.rol !== "admin") {
+      clearSession();
       return { authenticated: false, redirectTo: "/admin/login" };
     }
     return { authenticated: true };
