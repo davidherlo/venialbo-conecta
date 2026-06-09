@@ -1,7 +1,7 @@
 import { Authenticated, Refine } from "@refinedev/core";
 import { useNotificationProvider } from "@refinedev/antd";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
-import { ConfigProvider } from "antd";
+import { App as AntdApp, ConfigProvider } from "antd";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
 
@@ -42,6 +42,7 @@ function App() {
   return (
     <BrowserRouter>
       <ConfigProvider locale={esES}>
+        <AntdApp>
         <Refine
           dataProvider={venialboDataProvider(API_URL)}
           authProvider={venialboAuthProvider(API_URL)}
@@ -93,6 +94,7 @@ function App() {
             </Route>
           </Routes>
         </Refine>
+        </AntdApp>
       </ConfigProvider>
     </BrowserRouter>
   );

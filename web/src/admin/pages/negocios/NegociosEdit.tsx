@@ -52,6 +52,7 @@ export function NegociosEdit() {
         id={Number(id)}
         currentUrl={negocio.logo_url}
         uploadPath="logo"
+        responseKey="logo_url"
       />
     </div>
   );

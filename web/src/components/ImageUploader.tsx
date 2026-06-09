@@ -10,10 +10,11 @@ type Props = {
   id: number;
   currentUrl?: string | null;
   uploadPath?: string;
+  responseKey?: string;
   onUploaded?: (newUrl: string) => void;
 };
 
-export function ImageUploader({ resource, id, currentUrl, uploadPath = "imagen", onUploaded }: Props) {
+export function ImageUploader({ resource, id, currentUrl, uploadPath = "imagen", responseKey = "imagen_url", onUploaded }: Props) {
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentUrl ?? null);
   const { message } = App.useApp();
@@ -37,15 +38,18 @@ export function ImageUploader({ resource, id, currentUrl, uploadPath = "imagen",
         body: formData,
       });
 
-      if (!res.ok) throw new Error(`Error ${res.status}`);
+      if (!res.ok) {
+        const body = await res.text().catch(() => "");
+        throw new Error(`Error ${res.status}: ${body}`);
+      }
 
       const data = await res.json();
-      const url = data.imagen_url ?? null;
+      const url = data[responseKey] ?? null;
       setPreviewUrl(url);
       onUploaded?.(url);
       message.success("Imagen subida correctamente");
     } catch (e) {
-      message.error("Error al subir la imagen");
+      message.error(`Error al subir la imagen: ${e instanceof Error ? e.message : e}`);
     } finally {
       setUploading(false);
     }
