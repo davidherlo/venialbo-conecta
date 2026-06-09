@@ -29,9 +29,6 @@ export function NegociosForm({ showActivo }: Props) {
       <Form.Item name="categoria_negocio" label="Categoría">
         <Input placeholder="Ej: bar, tienda, peluquería…" />
       </Form.Item>
-      <Form.Item name="logo_url" label="URL del logo">
-        <Input placeholder="/media/imagenes/logo.jpg" />
-      </Form.Item>
       <Form.Item name={["redes_sociales", "facebook"]} label="Facebook">
         <Input placeholder="https://facebook.com/…" />
       </Form.Item>

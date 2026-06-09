@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useOne, useUpdate } from "@refinedev/core";
-import { Alert, Button, Form, Space, Spin, Typography } from "antd";
+import { Alert, Button, Divider, Form, Space, Spin, Typography } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
 import { NegociosForm } from "./NegociosForm";
+import { ImageUploader } from "../../../components/ImageUploader";
 
 type Negocio = {
   id: number; nombre: string; descripcion?: string; direccion?: string;
@@ -44,6 +45,14 @@ export function NegociosEdit() {
           <Button type="primary" htmlType="submit" loading={mutation.isPending}>Guardar cambios</Button>
         </Form.Item>
       </Form>
+
+      <Divider>Logo</Divider>
+      <ImageUploader
+        resource="negocios"
+        id={Number(id)}
+        currentUrl={negocio.logo_url}
+        uploadPath="logo"
+      />
     </div>
   );
 }

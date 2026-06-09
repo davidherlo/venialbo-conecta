@@ -9,10 +9,11 @@ type Props = {
   resource: string;
   id: number;
   currentUrl?: string | null;
+  uploadPath?: string;
   onUploaded?: (newUrl: string) => void;
 };
 
-export function ImageUploader({ resource, id, currentUrl, onUploaded }: Props) {
+export function ImageUploader({ resource, id, currentUrl, uploadPath = "imagen", onUploaded }: Props) {
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(currentUrl ?? null);
   const { message } = App.useApp();
@@ -30,7 +31,7 @@ export function ImageUploader({ resource, id, currentUrl, onUploaded }: Props) {
       formData.append("archivo", file);
 
       const token = localStorage.getItem(TOKEN_STORAGE_KEY);
-      const res = await fetch(`${API_URL}/${resource}/${id}/imagen`, {
+      const res = await fetch(`${API_URL}/${resource}/${id}/${uploadPath}`, {
         method: "POST",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
         body: formData,

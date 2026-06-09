@@ -1,11 +1,19 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+import os
+import uuid
+from pathlib import Path
+
+import aiofiles
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
 from sqlalchemy.orm import Session
 
 from app.auth.dependencies import require_admin
+from app.config import settings
 from app.crud import negocio as crud
 from app.database import get_db
 from app.models.usuario import Usuario
 from app.schemas.negocio import NegocioCreate, NegocioOut, NegocioUpdate
+
+EXTENSIONES_PERMITIDAS = {".jpg", ".jpeg", ".png", ".webp"}
 
 router = APIRouter(prefix="/negocios", tags=["negocios"])
 
@@ -62,3 +70,27 @@ def eliminar_negocio(
     if not negocio:
         raise HTTPException(status_code=404, detail="Negocio no encontrado")
     crud.delete(db, negocio)
+
+
+@router.post("/{negocio_id}/logo", response_model=NegocioOut)
+async def subir_logo(
+    negocio_id: int,
+    archivo: UploadFile = File(...),
+    db: Session = Depends(get_db),
+    _: Usuario = Depends(require_admin),
+):
+    negocio = crud.get_by_id(db, negocio_id)
+    if not negocio:
+        raise HTTPException(status_code=404, detail="Negocio no encontrado")
+
+    ext = Path(archivo.filename).suffix.lower()
+    if ext not in EXTENSIONES_PERMITIDAS:
+        raise HTTPException(status_code=400, detail=f"Formato no permitido. Usa: {EXTENSIONES_PERMITIDAS}")
+
+    nombre_archivo = f"{uuid.uuid4().hex}{ext}"
+    ruta = os.path.join(settings.images_dir, nombre_archivo)
+
+    async with aiofiles.open(ruta, "wb") as f:
+        await f.write(await archivo.read())
+
+    return crud.update(db, negocio, NegocioUpdate(logo_url=f"/media/imagenes/{nombre_archivo}"))
