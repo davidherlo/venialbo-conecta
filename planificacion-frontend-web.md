@@ -191,11 +191,11 @@ Cada paso es independiente; podemos parar en el 7 para validar la experiencia an
 | 2. Scaffold Refine | ✅ Completado |
 | 3. dataProvider FastAPI | ✅ Completado |
 | 4. authProvider dev-login | ✅ Completado |
-| 5. Zona pública mobile-first | ⬜ Siguiente |
-| 6. Login admin + AdminLayout | ⬜ |
+| 5. Zona pública mobile-first | ✅ Completado |
+| 6. Login admin + AdminLayout | ⬜ Siguiente |
 | 7. CRUD Noticias | ⬜ |
 | 8. CRUD Negocios/Servicios/Anuncios/Categorías | ⬜ |
 | 9. ImageUploader | ⬜ |
 | 10. Pulido + deploy | ⬜ |
 
-> Última actualización: 2026-04-27 — paso 2 completado
+> Última actualización: 2026-06-09 — paso 5 completado

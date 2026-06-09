@@ -27,7 +27,7 @@ El plan completo está en `planificacion-app-pueblo.md`.
 - **SDK mínimo:** API 26 (Android 8.0)
 
 ### Backend
-- **Lenguaje:** Python 3.11+
+- **Lenguaje:** Python 3.14 (Ubuntu 26 no incluye 3.11; venv recreado con python3)
 - **Framework:** FastAPI
 - **ORM:** SQLAlchemy + Alembic (migraciones)
 - **Autenticación:** JWT (JSON Web Tokens)
@@ -46,14 +46,12 @@ El plan completo está en `planificacion-app-pueblo.md`.
 ```bash
 # Preparación del entorno
 cd backend/
-python3.11 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
 
 # Arrancar servidor de desarrollo
-# IMPORTANTE: el venv tiene Python 3.10 y 3.11 mezclados; los paquetes están en 3.11.
-# Siempre usar python3.11 explícito y matar procesos previos primero.
 pkill -f uvicorn 2>/dev/null; true
-.venv/bin/python3.11 -m uvicorn app.main:app --reload --port 8000 --host 0.0.0.0
+.venv/bin/python3 -m uvicorn app.main:app --reload --port 8000 --host 0.0.0.0
 
 # Parar el servidor: Ctrl+C
 
