@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import { App as AntdApp, ConfigProvider } from "antd";
 import esES from "antd/locale/es_ES";
 import "antd/dist/reset.css";
+import { venialboTheme } from "./theme";
 
 import { venialboDataProvider } from "./providers/dataProvider";
 import { venialboAuthProvider } from "./providers/authProvider";
@@ -43,7 +44,7 @@ import { CategoriasEdit } from "./admin/pages/categorias/CategoriasEdit";
 function App() {
   return (
     <BrowserRouter>
-      <ConfigProvider locale={esES}>
+      <ConfigProvider locale={esES} theme={venialboTheme}>
         <AntdApp>
         <Refine
           dataProvider={venialboDataProvider(API_URL)}

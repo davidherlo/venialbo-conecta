@@ -12,6 +12,7 @@ import {
   Typography,
 } from "antd";
 import { formatFecha } from "../../../config";
+import { softTagStyle, type TagTone } from "../../../theme";
 
 type Anuncio = {
   id: number;
@@ -29,11 +30,11 @@ const TIPO_LABEL: Record<string, string> = {
   otro: "Otro",
 };
 
-const TIPO_COLOR: Record<string, string> = {
-  mascota_perdida: "orange",
-  compra_venta: "green",
-  objeto_perdido: "blue",
-  otro: "default",
+const TIPO_TONE: Record<string, TagTone> = {
+  mascota_perdida: "terracota",
+  compra_venta: "musgo",
+  objeto_perdido: "azul",
+  otro: "gris",
 };
 
 const PAGE_SIZE = 12;
@@ -56,16 +57,13 @@ export function AnunciosList() {
 
   return (
     <div>
-      <Typography.Title level={2}>Tablón de anuncios</Typography.Title>
+      <Typography.Title level={2} style={{ marginBottom: 24 }}>Tablón de anuncios</Typography.Title>
       <Row gutter={[16, 16]}>
         {items.map((a) => (
           <Col key={a.id} xs={24} sm={12} lg={8}>
-            <Link to={`/tablon/${a.id}`}>
-              <Card hoverable styles={{ body: { padding: 12 } }}>
-                <Tag
-                  color={TIPO_COLOR[a.tipo] ?? "default"}
-                  style={{ marginBottom: 6 }}
-                >
+            <Link to={`/tablon/${a.id}`} className="vc-card-link">
+              <Card styles={{ body: { padding: 12 } }}>
+                <Tag style={{ ...softTagStyle(TIPO_TONE[a.tipo] ?? "gris"), marginBottom: 6 }}>
                   {TIPO_LABEL[a.tipo] ?? a.tipo}
                 </Tag>
                 <Typography.Text

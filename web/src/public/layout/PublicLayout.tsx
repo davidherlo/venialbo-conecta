@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { Outlet, Link, useLocation } from "react-router";
 import { Layout, Menu, Button, Drawer, Grid, Typography } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
+import { MenuOutlined, EnvironmentFilled } from "@ant-design/icons";
+import { colors, fonts } from "../../theme";
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 const { useBreakpoint } = Grid;
 
 const NAV_ITEMS = [
@@ -27,8 +28,20 @@ export function PublicLayout() {
     ),
   }));
 
+  const logoStyle: React.CSSProperties = {
+    display: "flex",
+    alignItems: "center",
+    gap: 8,
+    color: colors.musgo,
+    fontFamily: fonts.serif,
+    fontWeight: 700,
+    fontSize: 22,
+    letterSpacing: "-0.02em",
+    flexShrink: 0,
+  };
+
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: "100vh", background: colors.crema }}>
       <Header
         style={{
           position: "sticky",
@@ -37,28 +50,35 @@ export function PublicLayout() {
           display: "flex",
           alignItems: "center",
           gap: 24,
-          padding: "0 24px",
+          background: colors.blanco,
+          borderBottom: `1px solid ${colors.borde}`,
+          boxShadow: "0 1px 4px rgba(61, 47, 31, 0.04)",
         }}
       >
-        <Link to="/" style={{ flexShrink: 0 }}>
-          <Typography.Text strong style={{ color: "#fff", fontSize: 18 }}>
-            VenialboConecta
-          </Typography.Text>
+        <Link to="/" style={logoStyle}>
+          <EnvironmentFilled style={{ color: colors.terracota, fontSize: 24 }} />
+          <span>Venialbo<span style={{ color: colors.terracota }}>Conecta</span></span>
         </Link>
 
         {screens.md ? (
           <Menu
-            theme="dark"
             mode="horizontal"
             selectedKeys={[location.pathname]}
             items={menuItems}
-            style={{ flex: 1, borderBottom: "none", minWidth: 0 }}
+            style={{
+              flex: 1,
+              borderBottom: "none",
+              minWidth: 0,
+              background: "transparent",
+              justifyContent: "flex-end",
+              fontWeight: 500,
+            }}
           />
         ) : (
           <div style={{ marginLeft: "auto" }}>
             <Button
               type="text"
-              icon={<MenuOutlined style={{ color: "#fff", fontSize: 20 }} />}
+              icon={<MenuOutlined style={{ color: colors.musgo, fontSize: 20 }} />}
               onClick={() => setDrawerOpen(true)}
             />
           </div>
@@ -66,11 +86,15 @@ export function PublicLayout() {
       </Header>
 
       <Drawer
-        title="VenialboConecta"
+        title={
+          <span style={{ fontFamily: fonts.serif, color: colors.musgo }}>
+            VenialboConecta
+          </span>
+        }
         placement="right"
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        width={240}
+        width={260}
       >
         <Menu
           mode="vertical"
@@ -85,11 +109,24 @@ export function PublicLayout() {
           maxWidth: 1200,
           width: "100%",
           margin: "0 auto",
-          padding: "24px 16px",
+          padding: "32px 16px 48px",
         }}
       >
         <Outlet />
       </Content>
+
+      <Footer
+        style={{
+          textAlign: "center",
+          background: colors.musgoFondo,
+          color: colors.marronSuave,
+          borderTop: `1px solid ${colors.borde}`,
+        }}
+      >
+        <Typography.Text style={{ color: colors.marronSuave, fontSize: 13 }}>
+          Hecho con cariño para Venialbo · {new Date().getFullYear()}
+        </Typography.Text>
+      </Footer>
     </Layout>
   );
 }

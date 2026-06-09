@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { StarFilled } from "@ant-design/icons";
 import { formatFecha, imgUrl } from "../../../config";
+import { colors, softTagStyle } from "../../../theme";
 
 type NoticiaList = {
   id: number;
@@ -44,23 +45,26 @@ export function NoticiasList() {
 
   return (
     <div>
-      <Typography.Title level={2}>Noticias</Typography.Title>
+      <Typography.Title level={2} style={{ marginBottom: 24 }}>Noticias</Typography.Title>
       <Row gutter={[16, 16]}>
         {items.map((n) => (
           <Col key={n.id} xs={24} sm={12} lg={8}>
-            <Link to={`/noticias/${n.id}`}>
+            <Link to={`/noticias/${n.id}`} className="vc-card-link">
               <Card
-                hoverable
                 cover={
                   n.imagen_url ? (
                     <img
                       src={imgUrl(n.imagen_url)}
                       alt={n.titulo}
-                      style={{ height: 180, objectFit: "cover" }}
+                      style={{
+                        height: 180,
+                        objectFit: "cover",
+                        borderBottom: `1px solid ${colors.borde}`,
+                      }}
                     />
                   ) : undefined
                 }
-                styles={{ body: { padding: 12 } }}
+                styles={{ body: { padding: 16 } }}
               >
                 <div
                   style={{
@@ -70,11 +74,11 @@ export function NoticiasList() {
                     marginBottom: 6,
                   }}
                 >
-                  <Tag color={n.categoria.color ?? "blue"}>
+                  <Tag style={softTagStyle("musgo")}>
                     {n.categoria.nombre}
                   </Tag>
                   {n.destacada && (
-                    <Tag icon={<StarFilled />} color="gold">
+                    <Tag icon={<StarFilled />} style={softTagStyle("dorado")}>
                       Destacada
                     </Tag>
                   )}

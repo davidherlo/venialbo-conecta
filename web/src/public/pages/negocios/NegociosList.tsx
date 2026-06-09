@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { PhoneOutlined, ShopOutlined } from "@ant-design/icons";
 import { imgUrl } from "../../../config";
+import { colors, softTagStyle } from "../../../theme";
 
 type Negocio = {
   id: number;
@@ -46,43 +47,46 @@ export function NegociosList() {
 
   return (
     <div>
-      <Typography.Title level={2}>Directorio de negocios</Typography.Title>
+      <Typography.Title level={2} style={{ marginBottom: 24 }}>
+        Directorio de negocios
+      </Typography.Title>
       <Row gutter={[16, 16]}>
         {items.map((n) => (
           <Col key={n.id} xs={24} sm={12} lg={8}>
-            <Link to={`/negocios/${n.id}`}>
+            <Link to={`/negocios/${n.id}`} className="vc-card-link">
               <Card
-                hoverable
                 cover={
                   n.logo_url ? (
                     <img
                       src={imgUrl(n.logo_url)}
                       alt={n.nombre}
                       style={{
-                        height: 120,
+                        height: 140,
                         objectFit: "contain",
-                        padding: 12,
-                        background: "#fafafa",
+                        padding: 16,
+                        background: colors.crema,
+                        borderBottom: `1px solid ${colors.borde}`,
                       }}
                     />
                   ) : (
                     <div
                       style={{
-                        height: 80,
+                        height: 100,
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        background: "#f5f5f5",
+                        background: colors.musgoFondo,
+                        borderBottom: `1px solid ${colors.borde}`,
                       }}
                     >
-                      <ShopOutlined style={{ fontSize: 40, color: "#bbb" }} />
+                      <ShopOutlined style={{ fontSize: 40, color: colors.musgoClaro }} />
                     </div>
                   )
                 }
-                styles={{ body: { padding: 12 } }}
+                styles={{ body: { padding: 16 } }}
               >
                 {n.categoria_negocio && (
-                  <Tag color="green" style={{ marginBottom: 6 }}>
+                  <Tag style={{ ...softTagStyle("terracota"), marginBottom: 8 }}>
                     {n.categoria_negocio}
                   </Tag>
                 )}

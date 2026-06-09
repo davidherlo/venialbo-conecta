@@ -19,6 +19,7 @@ import {
   PhoneOutlined,
 } from "@ant-design/icons";
 import { imgUrl } from "../../../config";
+import { colors, softTagStyle } from "../../../theme";
 
 type Negocio = {
   id: number;
@@ -60,25 +61,36 @@ export function NegociosShow() {
         ]}
       />
       {n.logo_url && (
-        <img
-          src={imgUrl(n.logo_url)}
-          alt={n.nombre}
-          style={{ maxHeight: 120, marginBottom: 16 }}
-        />
+        <div
+          style={{
+            background: colors.crema,
+            border: `1px solid ${colors.borde}`,
+            borderRadius: 14,
+            padding: 20,
+            marginBottom: 20,
+            display: "inline-block",
+          }}
+        >
+          <img
+            src={imgUrl(n.logo_url)}
+            alt={n.nombre}
+            style={{ maxHeight: 120, display: "block" }}
+          />
+        </div>
       )}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
         {n.categoria_negocio && (
-          <Tag color="green">{n.categoria_negocio}</Tag>
+          <Tag style={softTagStyle("terracota")}>{n.categoria_negocio}</Tag>
         )}
-        {!n.activo && <Tag color="red">Cerrado</Tag>}
+        {!n.activo && <Tag style={softTagStyle("rojo")}>Cerrado</Tag>}
       </div>
-      <Typography.Title level={2}>{n.nombre}</Typography.Title>
+      <Typography.Title level={2} style={{ marginTop: 4 }}>{n.nombre}</Typography.Title>
       {n.descripcion && (
         <Typography.Paragraph style={{ fontSize: 15 }}>
           {n.descripcion}
         </Typography.Paragraph>
       )}
-      <Divider />
+      <Divider style={{ borderColor: colors.borde }} />
       <Descriptions column={1} size="small">
         {n.direccion && (
           <Descriptions.Item label="Dirección">{n.direccion}</Descriptions.Item>
@@ -144,7 +156,9 @@ export function NegociosShow() {
         )}
       </Space>
       <div style={{ marginTop: 24 }}>
-        <Link to="/negocios">← Volver al directorio</Link>
+        <Link to="/negocios" style={{ color: colors.musgo, fontWeight: 500 }}>
+          ← Volver al directorio
+        </Link>
       </div>
     </div>
   );

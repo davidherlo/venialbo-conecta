@@ -12,6 +12,7 @@ import {
   Typography,
 } from "antd";
 import { PhoneOutlined } from "@ant-design/icons";
+import { colors, softTagStyle, type TagTone } from "../../../theme";
 
 type Servicio = {
   id: number;
@@ -33,12 +34,12 @@ const TIPO_LABEL: Record<string, string> = {
   otro: "Otro",
 };
 
-const TIPO_COLOR: Record<string, string> = {
-  medico: "red",
-  comedor: "orange",
-  bibliobus: "blue",
-  venta_ambulante: "green",
-  otro: "default",
+const TIPO_TONE: Record<string, TagTone> = {
+  medico: "rojo",
+  comedor: "terracota",
+  bibliobus: "azul",
+  venta_ambulante: "musgo",
+  otro: "gris",
 };
 
 export function ServiciosShow() {
@@ -64,19 +65,16 @@ export function ServiciosShow() {
           { title: s.nombre },
         ]}
       />
-      <Tag
-        color={TIPO_COLOR[s.tipo] ?? "default"}
-        style={{ marginBottom: 12 }}
-      >
+      <Tag style={{ ...softTagStyle(TIPO_TONE[s.tipo] ?? "gris"), marginBottom: 12 }}>
         {TIPO_LABEL[s.tipo] ?? s.tipo}
       </Tag>
-      <Typography.Title level={2}>{s.nombre}</Typography.Title>
+      <Typography.Title level={2} style={{ marginTop: 4 }}>{s.nombre}</Typography.Title>
       {s.descripcion && (
         <Typography.Paragraph style={{ fontSize: 15 }}>
           {s.descripcion}
         </Typography.Paragraph>
       )}
-      <Divider />
+      <Divider style={{ borderColor: colors.borde }} />
       <Descriptions column={1} size="small">
         {s.direccion && (
           <Descriptions.Item label="Dirección">{s.direccion}</Descriptions.Item>
@@ -107,7 +105,9 @@ export function ServiciosShow() {
         </Space>
       )}
       <div style={{ marginTop: 24 }}>
-        <Link to="/servicios">← Volver a Servicios</Link>
+        <Link to="/servicios" style={{ color: colors.musgo, fontWeight: 500 }}>
+          ← Volver a Servicios
+        </Link>
       </div>
     </div>
   );

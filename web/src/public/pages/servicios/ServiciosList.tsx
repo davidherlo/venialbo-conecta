@@ -12,6 +12,7 @@ import {
   Typography,
 } from "antd";
 import { PhoneOutlined } from "@ant-design/icons";
+import { softTagStyle, type TagTone } from "../../../theme";
 
 type Servicio = {
   id: number;
@@ -31,12 +32,12 @@ const TIPO_LABEL: Record<string, string> = {
   otro: "Otro",
 };
 
-const TIPO_COLOR: Record<string, string> = {
-  medico: "red",
-  comedor: "orange",
-  bibliobus: "blue",
-  venta_ambulante: "green",
-  otro: "default",
+const TIPO_TONE: Record<string, TagTone> = {
+  medico: "rojo",
+  comedor: "terracota",
+  bibliobus: "azul",
+  venta_ambulante: "musgo",
+  otro: "gris",
 };
 
 const PAGE_SIZE = 20;
@@ -61,16 +62,13 @@ export function ServiciosList() {
 
   return (
     <div>
-      <Typography.Title level={2}>Servicios</Typography.Title>
+      <Typography.Title level={2} style={{ marginBottom: 24 }}>Servicios</Typography.Title>
       <Row gutter={[16, 16]}>
         {items.map((s) => (
           <Col key={s.id} xs={24} sm={12} lg={8}>
-            <Link to={`/servicios/${s.id}`}>
-              <Card hoverable styles={{ body: { padding: 16 } }}>
-                <Tag
-                  color={TIPO_COLOR[s.tipo] ?? "default"}
-                  style={{ marginBottom: 8 }}
-                >
+            <Link to={`/servicios/${s.id}`} className="vc-card-link">
+              <Card styles={{ body: { padding: 16 } }}>
+                <Tag style={{ ...softTagStyle(TIPO_TONE[s.tipo] ?? "gris"), marginBottom: 8 }}>
                   {TIPO_LABEL[s.tipo] ?? s.tipo}
                 </Tag>
                 <Typography.Text

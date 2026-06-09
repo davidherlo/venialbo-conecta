@@ -9,6 +9,7 @@ import {
   Typography,
 } from "antd";
 import { formatFecha, imgUrl } from "../../../config";
+import { colors, softTagStyle, type TagTone } from "../../../theme";
 
 type Anuncio = {
   id: number;
@@ -29,11 +30,11 @@ const TIPO_LABEL: Record<string, string> = {
   otro: "Otro",
 };
 
-const TIPO_COLOR: Record<string, string> = {
-  mascota_perdida: "orange",
-  compra_venta: "green",
-  objeto_perdido: "blue",
-  otro: "default",
+const TIPO_TONE: Record<string, TagTone> = {
+  mascota_perdida: "terracota",
+  compra_venta: "musgo",
+  objeto_perdido: "azul",
+  otro: "gris",
 };
 
 export function AnunciosShow() {
@@ -67,25 +68,26 @@ export function AnunciosShow() {
             width: "100%",
             maxHeight: 360,
             objectFit: "cover",
-            borderRadius: 8,
+            borderRadius: 14,
             marginBottom: 24,
+            border: `1px solid ${colors.borde}`,
           }}
         />
       )}
       <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
-        <Tag color={TIPO_COLOR[a.tipo] ?? "default"}>
+        <Tag style={softTagStyle(TIPO_TONE[a.tipo] ?? "gris")}>
           {TIPO_LABEL[a.tipo] ?? a.tipo}
         </Tag>
-        {!a.activo && <Tag color="red">Expirado</Tag>}
+        {!a.activo && <Tag style={softTagStyle("rojo")}>Expirado</Tag>}
       </div>
-      <Typography.Title level={2}>{a.titulo}</Typography.Title>
-      <Typography.Text type="secondary">
+      <Typography.Title level={2} style={{ marginTop: 4 }}>{a.titulo}</Typography.Title>
+      <Typography.Text style={{ color: colors.marronSuave }}>
         Publicado el {formatFecha(a.fecha_publicacion)}
       </Typography.Text>
-      <Divider />
+      <Divider style={{ borderColor: colors.borde }} />
       {a.descripcion && (
         <Typography.Paragraph
-          style={{ fontSize: 16, whiteSpace: "pre-wrap" }}
+          style={{ fontSize: 16, whiteSpace: "pre-wrap", color: colors.marronTexto, lineHeight: 1.7 }}
         >
           {a.descripcion}
         </Typography.Paragraph>
@@ -95,8 +97,9 @@ export function AnunciosShow() {
           style={{
             marginTop: 16,
             padding: 16,
-            background: "#f6f6f6",
-            borderRadius: 8,
+            background: colors.musgoFondo,
+            border: `1px solid ${colors.borde}`,
+            borderRadius: 10,
           }}
         >
           <Typography.Text strong>Contacto: </Typography.Text>
@@ -104,7 +107,9 @@ export function AnunciosShow() {
         </div>
       )}
       <div style={{ marginTop: 24 }}>
-        <Link to="/tablon">← Volver al tablón</Link>
+        <Link to="/tablon" style={{ color: colors.musgo, fontWeight: 500 }}>
+          ← Volver al tablón
+        </Link>
       </div>
     </div>
   );

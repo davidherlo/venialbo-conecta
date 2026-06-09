@@ -10,6 +10,7 @@ import {
 } from "antd";
 import { StarFilled } from "@ant-design/icons";
 import { formatFecha, imgUrl } from "../../../config";
+import { colors, softTagStyle } from "../../../theme";
 
 type NoticiaDetail = {
   id: number;
@@ -53,30 +54,31 @@ export function NoticiasShow() {
             width: "100%",
             maxHeight: 400,
             objectFit: "cover",
-            borderRadius: 8,
+            borderRadius: 14,
             marginBottom: 24,
+            border: `1px solid ${colors.borde}`,
           }}
         />
       )}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
-        <Tag color={n.categoria.color ?? "blue"}>{n.categoria.nombre}</Tag>
+        <Tag style={softTagStyle("musgo")}>{n.categoria.nombre}</Tag>
         {n.destacada && (
-          <Tag icon={<StarFilled />} color="gold">
+          <Tag icon={<StarFilled />} style={softTagStyle("dorado")}>
             Destacada
           </Tag>
         )}
       </div>
-      <Typography.Title level={2}>{n.titulo}</Typography.Title>
-      <Typography.Text type="secondary">
+      <Typography.Title level={2} style={{ marginTop: 4 }}>{n.titulo}</Typography.Title>
+      <Typography.Text style={{ color: colors.marronSuave }}>
         {formatFecha(n.fecha_publicacion)}
       </Typography.Text>
-      <Divider />
+      <Divider style={{ borderColor: colors.borde }} />
       <Typography.Paragraph
-        style={{ fontSize: 16, lineHeight: 1.8, whiteSpace: "pre-wrap" }}
+        style={{ fontSize: 16, lineHeight: 1.8, whiteSpace: "pre-wrap", color: colors.marronTexto }}
       >
         {n.contenido}
       </Typography.Paragraph>
-      <Link to="/noticias">← Volver a Noticias</Link>
+      <Link to="/noticias" style={{ color: colors.musgo, fontWeight: 500 }}>← Volver a Noticias</Link>
     </div>
   );
 }
