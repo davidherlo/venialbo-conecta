@@ -23,6 +23,9 @@ import { AnunciosShow } from "./public/pages/anuncios/AnunciosShow";
 import { LoginPage } from "./admin/LoginPage";
 import { AdminLayout } from "./admin/layout/AdminLayout";
 import { Dashboard } from "./admin/pages/Dashboard";
+import { NoticiasList as AdminNoticiasList } from "./admin/pages/noticias/NoticiasList";
+import { NoticiasCreate } from "./admin/pages/noticias/NoticiasCreate";
+import { NoticiasEdit } from "./admin/pages/noticias/NoticiasEdit";
 
 function App() {
   return (
@@ -62,7 +65,9 @@ function App() {
               }
             >
               <Route index element={<Dashboard />} />
-              {/* Paso 7+: CRUD de recursos */}
+              <Route path="noticias" element={<AdminNoticiasList />} />
+              <Route path="noticias/nuevo" element={<NoticiasCreate />} />
+              <Route path="noticias/:id/editar" element={<NoticiasEdit />} />
             </Route>
           </Routes>
         </Refine>

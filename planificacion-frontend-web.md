@@ -193,9 +193,9 @@ Cada paso es independiente; podemos parar en el 7 para validar la experiencia an
 | 4. authProvider dev-login | ✅ Completado |
 | 5. Zona pública mobile-first | ✅ Completado |
 | 6. Login admin + AdminLayout | ✅ Completado |
-| 7. CRUD Noticias | ⬜ Siguiente |
-| 8. CRUD Negocios/Servicios/Anuncios/Categorías | ⬜ |
-| 9. ImageUploader | ⬜ |
+| 7. CRUD Noticias | ✅ Completado |
+| 8. CRUD Negocios/Servicios/Anuncios/Categorías | ⬜ Siguiente |
+| 9. ImageUploader | ✅ Completado |
 | 10. Pulido + deploy | ⬜ |
 
-> Última actualización: 2026-06-09 — paso 6 completado
+> Última actualización: 2026-06-09 — pasos 7 y 9 completados
