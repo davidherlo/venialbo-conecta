@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { StarFilled } from "@ant-design/icons";
 import { formatFecha, imgUrl } from "../../../config";
-import { colors, softTagStyle } from "../../../theme";
+import { colors, softTagStyle, softTagStyleFromHex } from "../../../theme";
 
 type NoticiaList = {
   id: number;
@@ -74,7 +74,7 @@ export function NoticiasList() {
                     marginBottom: 6,
                   }}
                 >
-                  <Tag style={softTagStyle("musgo")}>
+                  <Tag style={softTagStyleFromHex(n.categoria.color ?? "#5a7a3e")}>
                     {n.categoria.nombre}
                   </Tag>
                   {n.destacada && (

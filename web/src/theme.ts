@@ -46,6 +46,19 @@ export const softTagStyle = (tone: TagTone): CSSProperties => {
   };
 };
 
+export const softTagStyleFromHex = (hex: string): CSSProperties => {
+  const clean = hex.replace("#", "").slice(0, 6);
+  return {
+    background: `#${clean}1f`,
+    color: `#${clean}`,
+    border: "none",
+    fontWeight: 500,
+    fontSize: 12,
+    padding: "2px 10px",
+    borderRadius: 6,
+  };
+};
+
 export const venialboTheme: ThemeConfig = {
   token: {
     colorPrimary: colors.musgo,

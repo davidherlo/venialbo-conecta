@@ -19,7 +19,7 @@ import {
   StarFilled,
 } from "@ant-design/icons";
 import { formatFecha, imgUrl } from "../../../config";
-import { softTagStyle } from "../../../theme";
+import { softTagStyle, softTagStyleFromHex } from "../../../theme";
 
 type Categoria = { id: number; nombre: string; color?: string };
 type Noticia = {
@@ -83,7 +83,7 @@ export function NoticiasList() {
       title: "Categoría",
       dataIndex: "categoria",
       render: (cat: Categoria) => (
-        <Tag style={softTagStyle("musgo")}>{cat.nombre}</Tag>
+        <Tag style={softTagStyleFromHex(cat.color ?? "#5a7a3e")}>{cat.nombre}</Tag>
       ),
     },
     {

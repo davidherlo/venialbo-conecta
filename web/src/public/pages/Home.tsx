@@ -48,40 +48,71 @@ export function Home() {
     <div>
       <section
         style={{
+          position: "relative",
           textAlign: "center",
-          padding: "48px 16px 56px",
-          background: `linear-gradient(135deg, ${colors.musgoFondo} 0%, ${colors.cremaOscuro} 100%)`,
+          padding: "96px 24px 104px",
+          backgroundImage: "url('/venialbo-hero.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center 60%",
           borderRadius: 20,
           marginBottom: 40,
+          overflow: "hidden",
           border: `1px solid ${colors.borde}`,
         }}
       >
-        <Typography.Title
+        <div
           style={{
-            fontFamily: fonts.serif,
-            fontSize: "clamp(2rem, 5vw, 3.2rem)",
-            fontWeight: 600,
-            color: colors.marronTexto,
-            margin: 0,
-            marginBottom: 12,
-            letterSpacing: "-0.02em",
+            position: "absolute",
+            inset: 0,
+            background: `linear-gradient(180deg, rgba(61, 47, 31, 0.35) 0%, rgba(74, 103, 48, 0.55) 100%)`,
+          }}
+        />
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <Typography.Title
+            style={{
+              fontFamily: fonts.serif,
+              fontSize: "clamp(2.2rem, 5.5vw, 3.6rem)",
+              fontWeight: 600,
+              color: "#fff",
+              margin: 0,
+              marginBottom: 14,
+              letterSpacing: "-0.02em",
+              textShadow: "0 2px 12px rgba(0, 0, 0, 0.4)",
+            }}
+          >
+            Bienvenido a Venialbo
+          </Typography.Title>
+          <Typography.Text
+            style={{
+              fontSize: 18,
+              color: "rgba(255, 255, 255, 0.95)",
+              display: "block",
+              maxWidth: 580,
+              margin: "0 auto",
+              lineHeight: 1.5,
+              textShadow: "0 1px 6px rgba(0, 0, 0, 0.4)",
+            }}
+          >
+            Tu portal vecinal — noticias, negocios, servicios y un tablón para
+            compartir lo que pasa en el pueblo.
+          </Typography.Text>
+        </div>
+        <a
+          href="https://commons.wikimedia.org/wiki/File:Margen_izquierda_del_R%C3%8DO_Y_AYUNTAMIENTO.jpg"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            position: "absolute",
+            right: 10,
+            bottom: 8,
+            fontSize: 10,
+            color: "rgba(255, 255, 255, 0.7)",
+            textShadow: "0 1px 3px rgba(0, 0, 0, 0.6)",
+            zIndex: 1,
           }}
         >
-          Bienvenido a <span style={{ color: colors.musgo }}>Venialbo</span>
-        </Typography.Title>
-        <Typography.Text
-          style={{
-            fontSize: 18,
-            color: colors.marronSuave,
-            display: "block",
-            maxWidth: 540,
-            margin: "0 auto",
-            lineHeight: 1.5,
-          }}
-        >
-          Tu portal vecinal — noticias, negocios, servicios y un tablón para
-          compartir lo que pasa en el pueblo.
-        </Typography.Text>
+          © Ángel Encinas Carazo · CC BY-SA 4.0
+        </a>
       </section>
 
       <Row gutter={[20, 20]}>
