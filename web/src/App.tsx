@@ -33,7 +33,9 @@ import { ServiciosList as AdminServiciosList } from "./admin/pages/servicios/Ser
 import { ServiciosCreate } from "./admin/pages/servicios/ServiciosCreate";
 import { ServiciosEdit } from "./admin/pages/servicios/ServiciosEdit";
 import { AnunciosList as AdminAnunciosList } from "./admin/pages/anuncios/AnunciosList";
+import { AnunciosCreate } from "./admin/pages/anuncios/AnunciosCreate";
 import { AnunciosEdit } from "./admin/pages/anuncios/AnunciosEdit";
+import { NotFound } from "./pages/NotFound";
 import { CategoriasList } from "./admin/pages/categorias/CategoriasList";
 import { CategoriasCreate } from "./admin/pages/categorias/CategoriasCreate";
 import { CategoriasEdit } from "./admin/pages/categorias/CategoriasEdit";
@@ -87,11 +89,14 @@ function App() {
               <Route path="servicios/nuevo" element={<ServiciosCreate />} />
               <Route path="servicios/:id/editar" element={<ServiciosEdit />} />
               <Route path="anuncios" element={<AdminAnunciosList />} />
+              <Route path="anuncios/nuevo" element={<AnunciosCreate />} />
               <Route path="anuncios/:id/editar" element={<AnunciosEdit />} />
               <Route path="categorias" element={<CategoriasList />} />
               <Route path="categorias/nuevo" element={<CategoriasCreate />} />
               <Route path="categorias/:id/editar" element={<CategoriasEdit />} />
             </Route>
+            {/* 404 */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Refine>
         </AntdApp>

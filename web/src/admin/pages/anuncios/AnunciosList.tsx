@@ -52,6 +52,7 @@ export function AnunciosList() {
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 16 }}>
         <Typography.Title level={4} style={{ margin: 0 }}>Tablón de anuncios</Typography.Title>
+        <Link to="/admin/anuncios/nuevo"><Button type="primary">+ Nuevo anuncio</Button></Link>
       </div>
       {query.isError && <Alert type="error" message="Error al cargar anuncios" style={{ marginBottom: 16 }} />}
       <Table dataSource={result.data ?? []} columns={columns} rowKey="id"
