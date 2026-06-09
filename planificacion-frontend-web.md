@@ -156,14 +156,25 @@ La API ya lo hace así (POST recurso → POST /{id}/imagen). En el formulario de
 - [x] **2.** Scaffold Vite + Refine + Ant Design en `web/` ✅
 - [x] **3.** Configurar `dataProvider` adaptado (skip/limit + slash final) ✅
 - [x] **4.** Configurar `authProvider` con dev-login ✅
-- [ ] **5.** Zona pública: `Home` + listas/detalles de los 4 recursos (solo lectura, sin sidebar) — **diseñar mobile-first**, menú hamburguesa en móvil
-- [ ] **6.** `/admin/login` + `AdminLayout` con sidebar (colapsable en móvil)
-- [ ] **7.** CRUD de **Noticias** (el más completo) como referencia
-- [ ] **8.** Replicar para Negocios, Servicios, Anuncios, Categorías
-- [ ] **9.** Componente `ImageUploader` reutilizable
-- [ ] **10.** Pulido visual + deploy
+- [x] **5.** Zona pública: `Home` + listas/detalles de los 4 recursos (solo lectura, sin sidebar) ✅
+- [x] **6.** `/admin/login` + `AdminLayout` con sidebar (colapsable en móvil) ✅
+- [x] **7.** CRUD de **Noticias** (el más completo) como referencia ✅
+- [x] **8.** Replicar para Negocios, Servicios, Anuncios, Categorías ✅
+- [x] **9.** Componente `ImageUploader` reutilizable ✅
+- [x] **10.** Pulido visual — rediseño completo con paleta rural moderna (Fraunces serif + Inter, tonos musgo/terracota/crema/dorado, foto de portada del pueblo) ✅
+- [ ] **11.** Datos de ejemplo en todas las secciones (negocios, servicios, anuncios) para ver la web con contenido realista
+- [ ] **12.** Deploy
 
 Cada paso es independiente; podemos parar en el 7 para validar la experiencia antes de replicar.
+
+### Extras hechos fuera del plan original
+
+- **Acceso restringido a `/admin`** — solo usuarios con rol `admin` pueden entrar (`check` y `login` del authProvider verifican rol)
+- **Subida de logo para negocios** — endpoint backend + UI con `ImageUploader` (mismo patrón que noticias/anuncios)
+- **AnunciosCreate** — formulario de creación que faltaba en el panel admin
+- **Página 404** — fallback catch-all con botón al inicio
+- **Datos de prueba de noticias** — 15 noticias cubriendo las 11 categorías, con imágenes de Lorem Flickr por keyword temático
+- **Foto de portada** — río Talanda y casas del pueblo desde Wikimedia Commons (CC BY-SA 4.0)
 
 ---
 
@@ -183,7 +194,8 @@ Cada paso es independiente; podemos parar en el 7 para validar la experiencia an
 ## Estado
 
 - [x] Plan revisado y aprobado
-- [x] Implementación iniciada (paso 2/10 completado)
+- [x] Implementación iniciada
+- [x] Web funcional y con paleta rural aplicada (panel admin + zona pública)
 
 | Paso | Estado |
 |---|---|
@@ -196,6 +208,8 @@ Cada paso es independiente; podemos parar en el 7 para validar la experiencia an
 | 7. CRUD Noticias | ✅ Completado |
 | 8. CRUD Negocios/Servicios/Anuncios/Categorías | ✅ Completado |
 | 9. ImageUploader | ✅ Completado |
-| 10. Pulido + deploy | ⬜ Siguiente |
+| 10. Pulido visual (paleta rural + foto del pueblo) | ✅ Completado |
+| 11. Datos de ejemplo en todas las secciones | ⬜ Siguiente |
+| 12. Deploy | ⬜ Pendiente de decidir plataforma |
 
-> Última actualización: 2026-06-09 — pasos 7, 8 y 9 completados — panel admin completo
+> Última actualización: 2026-06-09 — pulido visual completado, web lista para llenar de contenido
