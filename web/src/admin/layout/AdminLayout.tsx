@@ -20,8 +20,10 @@ import {
   ShopOutlined,
   TagsOutlined,
   DashboardOutlined,
+  EnvironmentFilled,
 } from "@ant-design/icons";
 import type { Identity } from "../../providers/authProvider";
+import { colors, fonts, softTagStyle } from "../../theme";
 
 const { Sider, Header, Content } = Layout;
 const { useBreakpoint } = Grid;
@@ -73,19 +75,31 @@ export function AdminLayout() {
     >
       <div
         style={{
-          padding: "16px",
-          borderBottom: "1px solid #f0f0f0",
+          padding: "18px 16px",
+          borderBottom: `1px solid ${colors.borde}`,
           flexShrink: 0,
         }}
       >
-        <Link to="/">
-          <Typography.Text strong style={{ fontSize: 15 }}>
-            VenialboConecta
-          </Typography.Text>
+        <Link
+          to="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            color: colors.musgo,
+            fontFamily: fonts.serif,
+            fontWeight: 700,
+            fontSize: 18,
+            letterSpacing: "-0.01em",
+          }}
+        >
+          <EnvironmentFilled style={{ color: colors.terracota, fontSize: 20 }} />
+          <span>
+            Venialbo<span style={{ color: colors.terracota }}>Conecta</span>
+          </span>
         </Link>
         <Typography.Text
-          type="secondary"
-          style={{ display: "block", fontSize: 11 }}
+          style={{ display: "block", fontSize: 11, marginTop: 4, color: colors.marronSuave }}
         >
           Panel de administración
         </Typography.Text>
@@ -101,7 +115,7 @@ export function AdminLayout() {
       <div
         style={{
           padding: "12px 16px",
-          borderTop: "1px solid #f0f0f0",
+          borderTop: `1px solid ${colors.borde}`,
           flexShrink: 0,
         }}
       >
@@ -114,7 +128,7 @@ export function AdminLayout() {
               marginBottom: 10,
             }}
           >
-            <Avatar size="small" style={{ background: "#1677ff", flexShrink: 0 }}>
+            <Avatar size="small" style={{ background: colors.musgo, flexShrink: 0 }}>
               {identity.nombre[0].toUpperCase()}
             </Avatar>
             <div style={{ minWidth: 0 }}>
@@ -125,8 +139,12 @@ export function AdminLayout() {
                 {identity.nombre}
               </Typography.Text>
               <Tag
-                color={identity.rol === "admin" ? "red" : "blue"}
-                style={{ fontSize: 10, lineHeight: "16px", padding: "0 4px" }}
+                style={{
+                  ...softTagStyle(identity.rol === "admin" ? "terracota" : "azul"),
+                  fontSize: 10,
+                  lineHeight: "16px",
+                  padding: "0 6px",
+                }}
               >
                 {identity.rol}
               </Tag>
@@ -149,7 +167,7 @@ export function AdminLayout() {
   const SIDER_WIDTH = 220;
 
   return (
-    <Layout style={{ minHeight: "100vh" }}>
+    <Layout style={{ minHeight: "100vh", background: colors.crema }}>
       {screens.md ? (
         <Sider
           width={SIDER_WIDTH}
@@ -159,8 +177,8 @@ export function AdminLayout() {
             left: 0,
             top: 0,
             bottom: 0,
-            background: "#fff",
-            borderRight: "1px solid #f0f0f0",
+            background: colors.blanco,
+            borderRight: `1px solid ${colors.borde}`,
             overflow: "hidden",
           }}
         >
@@ -183,15 +201,16 @@ export function AdminLayout() {
       <Layout style={{ marginLeft: screens.md ? SIDER_WIDTH : 0 }}>
         <Header
           style={{
-            background: "#fff",
-            borderBottom: "1px solid #f0f0f0",
-            padding: "0 16px",
+            background: colors.blanco,
+            borderBottom: `1px solid ${colors.borde}`,
+            padding: "0 24px",
             display: "flex",
             alignItems: "center",
             gap: 12,
             position: "sticky",
             top: 0,
             zIndex: 10,
+            boxShadow: "0 1px 4px rgba(61, 47, 31, 0.04)",
           }}
         >
           {!screens.md && (
@@ -201,7 +220,10 @@ export function AdminLayout() {
               onClick={() => setDrawerOpen(true)}
             />
           )}
-          <Typography.Text strong>
+          <Typography.Text
+            strong
+            style={{ fontFamily: fonts.serif, fontSize: 18, color: colors.marronTexto }}
+          >
             {NAV_ITEMS.find(
               (i) =>
                 i.exact

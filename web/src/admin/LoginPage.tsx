@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { useLogin } from "@refinedev/core";
 import { Button, Card, Divider, Space, Typography } from "antd";
-import { LockOutlined } from "@ant-design/icons";
+import { EnvironmentFilled } from "@ant-design/icons";
 import type { LoginParams } from "../providers/authProvider";
+import { colors, fonts } from "../theme";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -20,17 +21,47 @@ export function LoginPage() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#f0f2f5",
+        background: `linear-gradient(135deg, ${colors.musgoFondo} 0%, ${colors.cremaOscuro} 100%)`,
         padding: 16,
       }}
     >
-      <Card style={{ width: "100%", maxWidth: 380 }}>
-        <div style={{ textAlign: "center", marginBottom: 24 }}>
-          <LockOutlined style={{ fontSize: 40, color: "#1677ff", marginBottom: 12 }} />
-          <Typography.Title level={3} style={{ margin: 0 }}>
+      <Card
+        style={{
+          width: "100%",
+          maxWidth: 400,
+          border: `1px solid ${colors.borde}`,
+          boxShadow: "0 10px 32px rgba(61, 47, 31, 0.1)",
+        }}
+        styles={{ body: { padding: 32 } }}
+      >
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          <div
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: "50%",
+              background: colors.musgoFondo,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 16px",
+            }}
+          >
+            <EnvironmentFilled style={{ fontSize: 32, color: colors.terracota }} />
+          </div>
+          <Typography.Title
+            level={3}
+            style={{
+              margin: 0,
+              fontFamily: fonts.serif,
+              color: colors.marronTexto,
+            }}
+          >
             Panel de administración
           </Typography.Title>
-          <Typography.Text type="secondary">VenialboConecta</Typography.Text>
+          <Typography.Text style={{ color: colors.marronSuave }}>
+            Venialbo<span style={{ color: colors.terracota }}>Conecta</span>
+          </Typography.Text>
         </div>
 
         <Space direction="vertical" style={{ width: "100%" }} size="middle">
@@ -46,7 +77,7 @@ export function LoginPage() {
             Entrar como Admin [DEV]
           </Button>
 
-          <Divider style={{ margin: "4px 0" }} />
+          <Divider style={{ margin: "4px 0", borderColor: colors.borde }} />
 
           <Button
             block

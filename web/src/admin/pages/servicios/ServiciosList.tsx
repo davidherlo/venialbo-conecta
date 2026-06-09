@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useList, useDelete } from "@refinedev/core";
 import { Alert, Button, Popconfirm, Space, Table, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { softTagStyle, type TagTone } from "../../../theme";
 
 type Servicio = { id: number; nombre: string; tipo: string; telefono?: string; activo: boolean };
 
@@ -10,8 +11,8 @@ const TIPO_LABEL: Record<string, string> = {
   medico: "Médico", comedor: "Comedor", bibliobus: "Bibliobús",
   venta_ambulante: "Venta ambulante", otro: "Otro",
 };
-const TIPO_COLOR: Record<string, string> = {
-  medico: "red", comedor: "orange", bibliobus: "blue", venta_ambulante: "green", otro: "default",
+const TIPO_TONE: Record<string, TagTone> = {
+  medico: "rojo", comedor: "terracota", bibliobus: "azul", venta_ambulante: "musgo", otro: "gris",
 };
 
 const PAGE_SIZE = 10;
@@ -26,9 +27,9 @@ export function ServiciosList() {
 
   const columns = [
     { title: "Nombre", dataIndex: "nombre", render: (v: string) => <Typography.Text strong>{v}</Typography.Text> },
-    { title: "Tipo", dataIndex: "tipo", render: (v: string) => <Tag color={TIPO_COLOR[v] ?? "default"}>{TIPO_LABEL[v] ?? v}</Tag> },
+    { title: "Tipo", dataIndex: "tipo", render: (v: string) => <Tag style={softTagStyle(TIPO_TONE[v] ?? "gris")}>{TIPO_LABEL[v] ?? v}</Tag> },
     { title: "Teléfono", dataIndex: "telefono", render: (v?: string) => v ?? "—" },
-    { title: "Estado", dataIndex: "activo", width: 90, render: (v: boolean) => <Tag color={v ? "green" : "red"}>{v ? "Activo" : "Inactivo"}</Tag> },
+    { title: "Estado", dataIndex: "activo", width: 90, render: (v: boolean) => <Tag style={softTagStyle(v ? "musgo" : "rojo")}>{v ? "Activo" : "Inactivo"}</Tag> },
     {
       title: "Acciones", width: 100,
       render: (_: unknown, r: Servicio) => (

@@ -4,6 +4,7 @@ import { useList, useDelete } from "@refinedev/core";
 import { Alert, Button, Popconfirm, Space, Table, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { formatFecha } from "../../../config";
+import { softTagStyle, type TagTone } from "../../../theme";
 
 type Anuncio = {
   id: number; tipo: string; titulo: string; contacto?: string;
@@ -14,8 +15,8 @@ const TIPO_LABEL: Record<string, string> = {
   mascota_perdida: "Mascota perdida", compra_venta: "Compra/Venta",
   objeto_perdido: "Objeto perdido", otro: "Otro",
 };
-const TIPO_COLOR: Record<string, string> = {
-  mascota_perdida: "orange", compra_venta: "green", objeto_perdido: "blue", otro: "default",
+const TIPO_TONE: Record<string, TagTone> = {
+  mascota_perdida: "terracota", compra_venta: "musgo", objeto_perdido: "azul", otro: "gris",
 };
 
 const PAGE_SIZE = 10;
@@ -30,10 +31,10 @@ export function AnunciosList() {
 
   const columns = [
     { title: "Título", dataIndex: "titulo", render: (v: string) => <Typography.Text strong>{v}</Typography.Text> },
-    { title: "Tipo", dataIndex: "tipo", render: (v: string) => <Tag color={TIPO_COLOR[v] ?? "default"}>{TIPO_LABEL[v] ?? v}</Tag> },
+    { title: "Tipo", dataIndex: "tipo", render: (v: string) => <Tag style={softTagStyle(TIPO_TONE[v] ?? "gris")}>{TIPO_LABEL[v] ?? v}</Tag> },
     { title: "Contacto", dataIndex: "contacto", render: (v?: string) => v ?? "—" },
     { title: "Fecha", dataIndex: "fecha_publicacion", width: 130, render: (v: string) => <Typography.Text style={{ fontSize: 12 }}>{formatFecha(v)}</Typography.Text> },
-    { title: "Estado", dataIndex: "activo", width: 90, render: (v: boolean) => <Tag color={v ? "green" : "red"}>{v ? "Activo" : "Expirado"}</Tag> },
+    { title: "Estado", dataIndex: "activo", width: 90, render: (v: boolean) => <Tag style={softTagStyle(v ? "musgo" : "rojo")}>{v ? "Activo" : "Expirado"}</Tag> },
     {
       title: "Acciones", width: 100,
       render: (_: unknown, r: Anuncio) => (

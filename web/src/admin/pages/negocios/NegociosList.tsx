@@ -3,6 +3,7 @@ import { Link } from "react-router";
 import { useList, useDelete } from "@refinedev/core";
 import { Alert, Button, Popconfirm, Space, Table, Tag, Typography } from "antd";
 import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons";
+import { softTagStyle } from "../../../theme";
 
 type Negocio = {
   id: number;
@@ -27,14 +28,14 @@ export function NegociosList() {
     {
       title: "Categoría",
       dataIndex: "categoria_negocio",
-      render: (v?: string) => v ? <Tag color="green">{v}</Tag> : <Typography.Text type="secondary">—</Typography.Text>,
+      render: (v?: string) => v ? <Tag style={softTagStyle("terracota")}>{v}</Tag> : <Typography.Text type="secondary">—</Typography.Text>,
     },
     { title: "Teléfono", dataIndex: "telefono", render: (v?: string) => v ?? "—" },
     {
       title: "Estado",
       dataIndex: "activo",
       width: 90,
-      render: (v: boolean) => <Tag color={v ? "green" : "red"}>{v ? "Activo" : "Inactivo"}</Tag>,
+      render: (v: boolean) => <Tag style={softTagStyle(v ? "musgo" : "rojo")}>{v ? "Activo" : "Inactivo"}</Tag>,
     },
     {
       title: "Acciones",

@@ -19,6 +19,7 @@ import {
   StarFilled,
 } from "@ant-design/icons";
 import { formatFecha, imgUrl } from "../../../config";
+import { softTagStyle } from "../../../theme";
 
 type Categoria = { id: number; nombre: string; color?: string };
 type Noticia = {
@@ -71,7 +72,7 @@ export function NoticiasList() {
         <Space direction="vertical" size={0}>
           <Typography.Text strong>{titulo}</Typography.Text>
           {record.destacada && (
-            <Tag icon={<StarFilled />} color="gold" style={{ fontSize: 11 }}>
+            <Tag icon={<StarFilled />} style={{ ...softTagStyle("dorado"), fontSize: 11 }}>
               Destacada
             </Tag>
           )}
@@ -82,7 +83,7 @@ export function NoticiasList() {
       title: "Categoría",
       dataIndex: "categoria",
       render: (cat: Categoria) => (
-        <Tag color={cat.color ?? "blue"}>{cat.nombre}</Tag>
+        <Tag style={softTagStyle("musgo")}>{cat.nombre}</Tag>
       ),
     },
     {
@@ -90,7 +91,7 @@ export function NoticiasList() {
       dataIndex: "activa",
       width: 90,
       render: (activa: boolean) => (
-        <Tag color={activa ? "green" : "red"}>{activa ? "Activa" : "Inactiva"}</Tag>
+        <Tag style={softTagStyle(activa ? "musgo" : "rojo")}>{activa ? "Activa" : "Inactiva"}</Tag>
       ),
     },
     {
