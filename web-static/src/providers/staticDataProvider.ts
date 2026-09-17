@@ -10,7 +10,9 @@ const cache = new Map<string, Promise<unknown>>();
 const loadJson = <T>(baseUrl: string, path: string): Promise<T> => {
   const url = `${baseUrl}data/${path}.json`;
   if (!cache.has(url)) {
-    const promise = fetch(url).then((response) => {
+    // GitHub Pages sirve todo con max-age=600: "no-cache" obliga a revalidar con ETag
+    // (304 si no ha cambiado) para que el contenido nuevo se vea nada más publicarse
+    const promise = fetch(url, { cache: "no-cache" }).then((response) => {
       if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
       return response.json();
     });
