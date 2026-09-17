@@ -64,3 +64,12 @@ Thumbs.db
 
 #Scripts de prueba
 scripts/*
+# ──────────────────────────────────────────────
+# Claude Code (configuración y contexto local, no se sube)
+# ──────────────────────────────────────────────
+.claude/
+**/.claude/
+CLAUDE.md
+**/CLAUDE.md
+CLAUDE.local.md
+**/CLAUDE.local.md
