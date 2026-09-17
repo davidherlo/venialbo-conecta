@@ -15,7 +15,7 @@ import { PhoneOutlined } from "@ant-design/icons";
 import { softTagStyle, type TagTone } from "../../../theme";
 
 type Servicio = {
-  id: number;
+  id: string;
   nombre: string;
   tipo: string;
   descripcion?: string;

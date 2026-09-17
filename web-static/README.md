@@ -1,29 +1,30 @@
-# web-static — prueba de VenialboConecta en GitHub Pages
+# web-static — VenialboConecta en GitHub Pages
 
-Copia de `web/` solo con la zona pública, sin backend. Los datos se leen de JSON
-exportados en `public/data/` y las imágenes de `public/media/`.
+Web pública del pueblo, sin backend. El contenido vive en el repo y se edita con
+[Pages CMS](https://app.pagescms.org).
 
-## Actualizar contenido
-
-```bash
-# 1. Arrancar el backend (ver /backend) y editar el contenido desde web/ (panel admin)
-# 2. Exportar los datos
-npm run export-data            # o API_URL=http://<ip>:8000 npm run export-data
-# 3. Compilar y probar
-npm run build
-npm run preview                # http://localhost:4173/venialbo-conecta/
+```
+content/<recurso>/<slug>.json   ← lo que edita Pages CMS (configurado en /.pages.yml)
+public/media/imagenes/          ← imágenes subidas desde Pages CMS
+scripts/build-content.mjs       → genera public/data/ (no versionado) al compilar
 ```
 
-## Publicar
+## Editar contenido
+
+1. Entrar en https://app.pagescms.org con la cuenta de GitHub y abrir el repo `venialbo-conecta` (rama `main`).
+2. Crear o editar noticias, negocios, servicios, anuncios o categorías y pulsar **Save**.
+3. Cada guardado es un commit en `main`; la GitHub Action `web-static-pages.yml` compila
+   y publica la web en 1-2 minutos (pestaña **Actions** del repo para ver el progreso).
+
+Para ocultar algo sin borrarlo, desmarcar **Visible en la web**. Los anuncios desaparecen
+solos pasada su fecha de caducidad.
+
+## Desarrollo local
 
 ```bash
-npm run deploy                 # sube dist/ a la rama gh-pages del repo
+npm install
+npm run dev                    # regenera public/data y arranca Vite
+npm run build && npm run preview   # http://localhost:4173/venialbo-conecta/
 ```
-
-En GitHub: Settings → Pages → Source: rama `gh-pages`, carpeta `/`.
 
 La ruta base es `/venialbo-conecta/`. Con dominio propio: `BASE_PATH=/ npm run build`.
-
-## Descartar la prueba
-
-Borrar esta carpeta (y la rama `gh-pages` si se llegó a publicar).

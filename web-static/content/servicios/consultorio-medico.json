@@ -1,0 +1,10 @@
+{
+  "nombre": "Consultorio médico",
+  "tipo": "medico",
+  "descripcion": "Médico de cabecera. Consultas los martes y jueves.",
+  "direccion": "C/ Mayor 12",
+  "telefono": "923 000 001",
+  "horario": "Martes y jueves 10:00-14:00",
+  "informacion_adicional": "",
+  "activo": true
+}

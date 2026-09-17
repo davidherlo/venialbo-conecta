@@ -16,7 +16,7 @@ import { imgUrl } from "../../../config";
 import { colors, softTagStyle } from "../../../theme";
 
 type Negocio = {
-  id: number;
+  id: string;
   nombre: string;
   descripcion?: string;
   telefono?: string;

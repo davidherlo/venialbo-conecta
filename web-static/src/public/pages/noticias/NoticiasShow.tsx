@@ -13,11 +13,11 @@ import { formatFecha, imgUrl } from "../../../config";
 import { colors, softTagStyle, softTagStyleFromHex } from "../../../theme";
 
 type NoticiaDetail = {
-  id: number;
+  id: string;
   titulo: string;
   contenido: string;
   imagen_url?: string;
-  categoria: { id: number; nombre: string; color?: string };
+  categoria: { id: string; nombre: string; color?: string };
   fecha_publicacion: string;
   destacada: boolean;
   activa: boolean;
@@ -27,7 +27,7 @@ export function NoticiasShow() {
   const { id } = useParams<{ id: string }>();
   const { result, query } = useOne<NoticiaDetail>({
     resource: "noticias",
-    id: Number(id),
+    id,
   });
 
   if (query.isLoading)

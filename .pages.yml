@@ -1,0 +1,265 @@
+# Configuración de Pages CMS (https://pagescms.org) para web-static/
+# Cada guardado hace un commit en main y la GitHub Action republica la web.
+
+media:
+  input: web-static/public/media/imagenes
+  output: /media/imagenes
+  categories: [image]
+  rename: safe
+
+content:
+  - name: noticias
+    label: Noticias
+    type: collection
+    path: web-static/content/noticias
+    format: json
+    filename: "{year}-{month}-{day}-{primary}.json"
+    view:
+      primary: titulo
+      fields: [titulo, fecha_publicacion, destacada, activa]
+      sort: [fecha_publicacion, titulo]
+      search: [titulo]
+      default:
+        sort: fecha_publicacion
+        order: desc
+    fields:
+      - name: titulo
+        label: Título
+        type: string
+        required: true
+      - name: fecha_publicacion
+        label: Fecha de publicación
+        type: date
+        required: true
+        options:
+          time: true
+          format: yyyy-MM-dd'T'HH:mm
+      - name: categoria
+        label: Categoría
+        type: reference
+        required: true
+        options:
+          collection: categorias
+          value: "{path}"
+          label: "{nombre}"
+          search: nombre
+      - name: destacada
+        label: Destacada
+        type: boolean
+        default: false
+      - name: activa
+        label: Visible en la web
+        description: Desmárcala para ocultar la noticia sin borrarla.
+        type: boolean
+        default: true
+      - name: imagen_url
+        label: Imagen
+        type: image
+      - name: contenido
+        label: Contenido
+        description: Texto plano. Los saltos de línea se respetan.
+        type: text
+        required: true
+
+  - name: negocios
+    label: Negocios
+    type: collection
+    path: web-static/content/negocios
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: nombre
+      fields: [nombre, categoria_negocio, activo]
+      sort: [nombre, categoria_negocio]
+      search: [nombre, categoria_negocio]
+      default:
+        sort: nombre
+        order: asc
+    fields:
+      - name: nombre
+        label: Nombre
+        type: string
+        required: true
+      - name: categoria_negocio
+        label: Tipo de negocio
+        description: "Por ejemplo: Bar, Panadería, Taller…"
+        type: string
+      - name: descripcion
+        label: Descripción
+        type: text
+      - name: logo_url
+        label: Logo o foto
+        type: image
+      - name: direccion
+        label: Dirección
+        type: string
+      - name: telefono
+        label: Teléfono
+        type: string
+      - name: email
+        label: Email
+        type: string
+      - name: web_url
+        label: Página web
+        description: Dirección completa, empezando por https://
+        type: string
+      - name: redes_sociales
+        label: Redes sociales
+        type: object
+        fields:
+          - name: facebook
+            label: Facebook (URL)
+            type: string
+          - name: instagram
+            label: Instagram (URL)
+            type: string
+      - name: horario
+        label: Horario
+        type: string
+      - name: activo
+        label: Visible en la web
+        type: boolean
+        default: true
+
+  - name: servicios
+    label: Servicios
+    type: collection
+    path: web-static/content/servicios
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: nombre
+      fields: [nombre, tipo, activo]
+      sort: [nombre, tipo]
+      search: [nombre]
+      default:
+        sort: tipo
+        order: asc
+    fields:
+      - name: nombre
+        label: Nombre
+        type: string
+        required: true
+      - name: tipo
+        label: Tipo
+        type: select
+        required: true
+        options:
+          values:
+            - name: medico
+              label: Médico
+            - name: comedor
+              label: Comedor
+            - name: bibliobus
+              label: Bibliobús
+            - name: venta_ambulante
+              label: Venta ambulante
+            - name: otro
+              label: Otro
+      - name: descripcion
+        label: Descripción
+        type: text
+      - name: direccion
+        label: Dirección
+        type: string
+      - name: telefono
+        label: Teléfono
+        type: string
+      - name: horario
+        label: Horario
+        type: string
+      - name: informacion_adicional
+        label: Información adicional
+        type: text
+      - name: activo
+        label: Visible en la web
+        type: boolean
+        default: true
+
+  - name: anuncios
+    label: Tablón de anuncios
+    type: collection
+    path: web-static/content/anuncios
+    format: json
+    filename: "{year}-{month}-{day}-{primary}.json"
+    view:
+      primary: titulo
+      fields: [titulo, tipo, fecha_caducidad, activo]
+      sort: [fecha_publicacion, fecha_caducidad, titulo]
+      search: [titulo]
+      default:
+        sort: fecha_publicacion
+        order: desc
+    fields:
+      - name: titulo
+        label: Título
+        type: string
+        required: true
+      - name: tipo
+        label: Tipo
+        type: select
+        required: true
+        options:
+          values:
+            - name: mascota_perdida
+              label: Mascota perdida
+            - name: compra_venta
+              label: Compra / Venta
+            - name: objeto_perdido
+              label: Objeto perdido
+            - name: otro
+              label: Otro
+      - name: descripcion
+        label: Descripción
+        type: text
+      - name: contacto
+        label: Contacto
+        description: Teléfono, email o cómo localizar a quien publica.
+        type: string
+      - name: imagen_url
+        label: Imagen
+        type: image
+      - name: fecha_publicacion
+        label: Fecha de publicación
+        type: date
+        required: true
+        options:
+          time: true
+          format: yyyy-MM-dd'T'HH:mm
+      - name: fecha_caducidad
+        label: Visible hasta (incluido)
+        description: Pasado este día el anuncio desaparece solo de la web.
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: activo
+        label: Visible en la web
+        type: boolean
+        default: true
+
+  - name: categorias
+    label: Categorías de noticias
+    type: collection
+    path: web-static/content/categorias
+    format: json
+    filename: "{primary}.json"
+    view:
+      primary: nombre
+      fields: [nombre, icono, color]
+      sort: [nombre]
+      default:
+        sort: nombre
+        order: asc
+    fields:
+      - name: nombre
+        label: Nombre
+        type: string
+        required: true
+      - name: icono
+        label: Icono (emoji)
+        type: string
+      - name: color
+        label: Color
+        description: "Código hexadecimal, por ejemplo #4CAF50"
+        type: string

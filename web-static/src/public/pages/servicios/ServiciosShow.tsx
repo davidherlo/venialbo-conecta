@@ -15,7 +15,7 @@ import { PhoneOutlined } from "@ant-design/icons";
 import { colors, softTagStyle, type TagTone } from "../../../theme";
 
 type Servicio = {
-  id: number;
+  id: string;
   nombre: string;
   tipo: string;
   descripcion?: string;
@@ -46,7 +46,7 @@ export function ServiciosShow() {
   const { id } = useParams<{ id: string }>();
   const { result, query } = useOne<Servicio>({
     resource: "servicios",
-    id: Number(id),
+    id,
   });
 
   if (query.isLoading)

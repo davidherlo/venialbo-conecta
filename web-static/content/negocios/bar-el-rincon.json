@@ -1,0 +1,16 @@
+{
+  "nombre": "Bar El Rincón",
+  "categoria_negocio": "Bar",
+  "descripcion": "Bar de toda la vida en el centro del pueblo",
+  "logo_url": "",
+  "direccion": "Calle Mayor, 3",
+  "telefono": "921000001",
+  "email": "",
+  "web_url": "",
+  "redes_sociales": {
+    "facebook": "https://facebook.com/elrincon",
+    "instagram": ""
+  },
+  "horario": "Lun-Dom 8:00-23:00",
+  "activo": true
+}

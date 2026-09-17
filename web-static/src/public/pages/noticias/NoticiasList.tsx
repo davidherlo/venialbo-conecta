@@ -16,10 +16,10 @@ import { formatFecha, imgUrl } from "../../../config";
 import { colors, softTagStyle, softTagStyleFromHex } from "../../../theme";
 
 type NoticiaList = {
-  id: number;
+  id: string;
   titulo: string;
   imagen_url?: string;
-  categoria: { id: number; nombre: string; color?: string };
+  categoria: { id: string; nombre: string; color?: string };
   fecha_publicacion: string;
   destacada: boolean;
   activa: boolean;

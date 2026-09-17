@@ -1,0 +1,16 @@
+{
+  "nombre": "Panadería Tu Panesito",
+  "categoria_negocio": "Panadería",
+  "descripcion": "Panadería del pueblo",
+  "logo_url": "/media/imagenes/8928f66aaf9a44d6bdce5c7cd065408e.jpg",
+  "direccion": "Calle del Pan",
+  "telefono": "123456789",
+  "email": "",
+  "web_url": "",
+  "redes_sociales": {
+    "facebook": "",
+    "instagram": ""
+  },
+  "horario": "L-S 09:00-14:00",
+  "activo": true
+}

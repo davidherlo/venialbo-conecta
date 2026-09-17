@@ -12,7 +12,7 @@ import { formatFecha, imgUrl } from "../../../config";
 import { colors, softTagStyle, type TagTone } from "../../../theme";
 
 type Anuncio = {
-  id: number;
+  id: string;
   tipo: string;
   titulo: string;
   descripcion?: string;
@@ -41,7 +41,7 @@ export function AnunciosShow() {
   const { id } = useParams<{ id: string }>();
   const { result, query } = useOne<Anuncio>({
     resource: "anuncios",
-    id: Number(id),
+    id,
   });
 
   if (query.isLoading)

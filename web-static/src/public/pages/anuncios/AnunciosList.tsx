@@ -15,7 +15,7 @@ import { formatFecha } from "../../../config";
 import { softTagStyle, type TagTone } from "../../../theme";
 
 type Anuncio = {
-  id: number;
+  id: string;
   tipo: string;
   titulo: string;
   descripcion?: string;

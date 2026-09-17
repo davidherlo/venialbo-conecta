@@ -22,7 +22,7 @@ import { imgUrl } from "../../../config";
 import { colors, softTagStyle } from "../../../theme";
 
 type Negocio = {
-  id: number;
+  id: string;
   nombre: string;
   descripcion?: string;
   direccion?: string;
@@ -40,7 +40,7 @@ export function NegociosShow() {
   const { id } = useParams<{ id: string }>();
   const { result, query } = useOne<Negocio>({
     resource: "negocios",
-    id: Number(id),
+    id,
   });
 
   if (query.isLoading)

@@ -1,6 +1,6 @@
 import type { DataProvider, CrudFilter } from "@refinedev/core";
 
-// Lee los JSON generados por scripts/export-data.mjs:
+// Lee los JSON generados por scripts/build-content.mjs:
 //   data/<recurso>.json       → listado completo
 //   data/<recurso>/<id>.json  → detalle
 // Filtros y paginación se resuelven en el navegador.
@@ -31,13 +31,13 @@ const applyFilters = (rows: Row[], filters?: CrudFilter[]): Row[] =>
     }),
   );
 
-// El backend oculta los anuncios caducados; la copia estática envejece, así que se
-// vuelve a comprobar aquí. Las fechas vienen en UTC sin zona horaria.
+// La web se publica de tarde en tarde, así que la caducidad se comprueba al visitarla.
+// Pages CMS guarda la fecha sin hora ("2026-09-30"): el anuncio se ve hasta el final de ese día.
 const noCaducado = (row: Row): boolean => {
   const fecha = row.fecha_caducidad;
   if (typeof fecha !== "string") return true;
-  const iso = /Z|[+-]\d\d:\d\d$/.test(fecha) ? fecha : `${fecha}Z`;
-  return new Date(iso).getTime() > Date.now();
+  const local = /^\d{4}-\d{2}-\d{2}$/.test(fecha) ? `${fecha}T23:59:59` : fecha;
+  return new Date(local).getTime() > Date.now();
 };
 
 const readOnly = (): never => {
