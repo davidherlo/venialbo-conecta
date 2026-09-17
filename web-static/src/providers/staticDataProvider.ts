@@ -1,0 +1,70 @@
+import type { DataProvider, CrudFilter } from "@refinedev/core";
+
+// Lee los JSON generados por scripts/export-data.mjs:
+//   data/<recurso>.json       → listado completo
+//   data/<recurso>/<id>.json  → detalle
+// Filtros y paginación se resuelven en el navegador.
+
+const cache = new Map<string, Promise<unknown>>();
+
+const loadJson = <T>(baseUrl: string, path: string): Promise<T> => {
+  const url = `${baseUrl}data/${path}.json`;
+  if (!cache.has(url)) {
+    const promise = fetch(url).then((response) => {
+      if (!response.ok) throw new Error(`HTTP ${response.status}: ${url}`);
+      return response.json();
+    });
+    promise.catch(() => cache.delete(url));
+    cache.set(url, promise);
+  }
+  return cache.get(url) as Promise<T>;
+};
+
+type Row = Record<string, unknown>;
+
+const applyFilters = (rows: Row[], filters?: CrudFilter[]): Row[] =>
+  rows.filter((row) =>
+    (filters ?? []).every((f) => {
+      if (!("field" in f) || f.operator !== "eq") return true;
+      if (f.value === undefined || f.value === null || f.value === "") return true;
+      return String(row[f.field]) === String(f.value);
+    }),
+  );
+
+// El backend oculta los anuncios caducados; la copia estática envejece, así que se
+// vuelve a comprobar aquí. Las fechas vienen en UTC sin zona horaria.
+const noCaducado = (row: Row): boolean => {
+  const fecha = row.fecha_caducidad;
+  if (typeof fecha !== "string") return true;
+  const iso = /Z|[+-]\d\d:\d\d$/.test(fecha) ? fecha : `${fecha}Z`;
+  return new Date(iso).getTime() > Date.now();
+};
+
+const readOnly = (): never => {
+  throw new Error("Versión estática: solo lectura");
+};
+
+export const staticDataProvider = (baseUrl: string): DataProvider => ({
+  getApiUrl: () => baseUrl,
+
+  getList: async ({ resource, pagination, filters }) => {
+    let rows = await loadJson<Row[]>(baseUrl, resource);
+    if (resource === "anuncios") rows = rows.filter(noCaducado);
+    rows = applyFilters(rows, filters);
+
+    const { currentPage = 1, pageSize = 20, mode = "server" } = pagination ?? {};
+    if (mode === "off") return { data: rows as never[], total: rows.length };
+
+    const start = (currentPage - 1) * pageSize;
+    return { data: rows.slice(start, start + pageSize) as never[], total: rows.length };
+  },
+
+  getOne: async ({ resource, id }) => {
+    const data = await loadJson<Row>(baseUrl, `${resource}/${id}`);
+    return { data: data as never };
+  },
+
+  create: readOnly,
+  update: readOnly,
+  deleteOne: readOnly,
+});
