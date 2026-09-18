@@ -58,6 +58,101 @@ a:hover {
   }
 }
 
+/* Contenido de noticias, renderizado desde Markdown (ver src/markdown.ts).
+   Los encabezados ya cogen la serif de la regla global de arriba. */
+.vc-md {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #3d2f1f;
+}
+
+.vc-md > *:first-child {
+  margin-top: 0;
+}
+
+.vc-md > *:last-child {
+  margin-bottom: 0;
+}
+
+.vc-md p {
+  margin: 0 0 1em;
+}
+
+.vc-md h1, .vc-md h2, .vc-md h3 {
+  margin: 1.6em 0 0.5em;
+  line-height: 1.3;
+}
+
+.vc-md h1 { font-size: 1.6em; }
+.vc-md h2 { font-size: 1.35em; }
+.vc-md h3 { font-size: 1.15em; }
+
+/* Subrayado explicito: la regla global quita el de todos los enlaces, y dentro
+   de un texto corrido hace falta para no depender solo del color. */
+.vc-md a {
+  color: #487824;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.vc-md ul, .vc-md ol {
+  margin: 0 0 1em;
+  padding-left: 1.4em;
+}
+
+.vc-md li {
+  margin-bottom: 0.3em;
+}
+
+.vc-md blockquote {
+  margin: 1.2em 0;
+  padding-left: 18px;
+  border-left: 3px solid #487824;
+  color: #6b5a44;
+}
+
+.vc-md img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 14px;
+  margin: 0.6em 0;
+}
+
+.vc-md table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.2em 0;
+}
+
+.vc-md th, .vc-md td {
+  border: 1px solid #e8e0d0;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.vc-md th {
+  background: #edf2e9;
+}
+
+.vc-md code {
+  background: #f0e9d8;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.vc-md pre {
+  background: #f0e9d8;
+  padding: 14px;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+.vc-md pre code {
+  background: none;
+  padding: 0;
+}
+
 /* Banda ancha de Pueblos Conectados, bajo la rejilla de secciones */
 .vc-banda {
   display: flex;

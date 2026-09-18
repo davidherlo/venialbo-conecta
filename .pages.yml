@@ -57,9 +57,13 @@ content:
         type: image
       - name: contenido
         label: Contenido
-        description: Texto plano. Los saltos de línea se respetan.
-        type: text
+        description: Negrita, cursiva, enlaces, listas, encabezados, citas, tablas e imágenes.
+        type: rich-text
         required: true
+        options:
+          # markdown ya es el valor por defecto, pero se deja explícito: se
+          # guarda legible en el JSON y la web lo renderiza con markdown-it.
+          format: markdown
 
   - name: negocios
     label: Negocios
