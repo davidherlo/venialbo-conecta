@@ -12,6 +12,9 @@ content:
     label: Noticias
     type: collection
     path: web-static/content/noticias
+    # Sin subcarpetas: build-content.mjs solo lee los .json de primer nivel, y lo
+    # que se guardara en una carpeta no saldria en la web. Igual en todas.
+    subfolders: false
     format: json
     filename: "{year}-{month}-{day}-{primary}.json"
     view:
@@ -69,6 +72,7 @@ content:
     label: Negocios
     type: collection
     path: web-static/content/negocios
+    subfolders: false
     format: json
     filename: "{primary}.json"
     view:
@@ -131,6 +135,7 @@ content:
     label: Servicios
     type: collection
     path: web-static/content/servicios
+    subfolders: false
     format: json
     filename: "{primary}.json"
     view:
@@ -188,6 +193,7 @@ content:
     label: Tablón de anuncios
     type: collection
     path: web-static/content/anuncios
+    subfolders: false
     format: json
     filename: "{year}-{month}-{day}-{primary}.json"
     view:
@@ -252,6 +258,7 @@ content:
     label: Categorías de noticias
     type: collection
     path: web-static/content/categorias
+    subfolders: false
     format: json
     filename: "{primary}.json"
     view:
