@@ -10,6 +10,7 @@ import {
 } from "antd";
 import { formatFecha, imgUrl } from "../../../config";
 import { colors, softTagStyle, type TagTone } from "../../../theme";
+import { renderMarkdown } from "../../../markdown";
 
 type Anuncio = {
   id: string;
@@ -86,11 +87,11 @@ export function AnunciosShow() {
       </Typography.Text>
       <Divider style={{ borderColor: colors.borde }} />
       {a.descripcion && (
-        <Typography.Paragraph
-          style={{ fontSize: 16, whiteSpace: "pre-wrap", color: colors.marronTexto, lineHeight: 1.7 }}
-        >
-          {a.descripcion}
-        </Typography.Paragraph>
+        <div
+          className="vc-md"
+          style={{ lineHeight: 1.7, marginBottom: 16 }}
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(a.descripcion) }}
+        />
       )}
       {a.contacto && (
         <div

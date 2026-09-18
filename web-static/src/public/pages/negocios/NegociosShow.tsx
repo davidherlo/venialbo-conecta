@@ -20,6 +20,7 @@ import {
 } from "@ant-design/icons";
 import { imgUrl } from "../../../config";
 import { colors, softTagStyle } from "../../../theme";
+import { renderMarkdown } from "../../../markdown";
 
 type Negocio = {
   id: string;
@@ -86,9 +87,11 @@ export function NegociosShow() {
       </div>
       <Typography.Title level={2} style={{ marginTop: 4 }}>{n.nombre}</Typography.Title>
       {n.descripcion && (
-        <Typography.Paragraph style={{ fontSize: 15 }}>
-          {n.descripcion}
-        </Typography.Paragraph>
+        <div
+          className="vc-md"
+          style={{ fontSize: 15 }}
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(n.descripcion) }}
+        />
       )}
       <Divider style={{ borderColor: colors.borde }} />
       <Descriptions column={1} size="small">

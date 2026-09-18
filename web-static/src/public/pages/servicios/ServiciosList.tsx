@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { PhoneOutlined } from "@ant-design/icons";
 import { softTagStyle, type TagTone } from "../../../theme";
+import { textoPlano } from "../../../markdown";
 
 type Servicio = {
   id: string;
@@ -89,7 +90,7 @@ export function ServiciosList() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {s.descripcion}
+                    {textoPlano(s.descripcion)}
                   </Typography.Text>
                 )}
                 {s.telefono && (

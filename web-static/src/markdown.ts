@@ -45,3 +45,20 @@ md.renderer.rules.link_open = (tokens, idx, options, env, self) => {
 
 export const renderMarkdown = (texto?: string | null): string =>
   texto ? md.render(texto) : "";
+
+// Para los extractos de una linea de los listados: el texto sin marcas de
+// formato. Se saca de los tokens de markdown-it y no con expresiones
+// regulares, para que [texto](url) deje "texto" y no la direccion.
+export const textoPlano = (texto?: string | null): string => {
+  if (!texto) return "";
+  const trozos: string[] = [];
+  for (const bloque of md.parse(texto, {})) {
+    for (const t of bloque.children ?? []) {
+      if (t.type === "text" || t.type === "code_inline") trozos.push(t.content);
+      else if (t.type === "softbreak" || t.type === "hardbreak") trozos.push(" ");
+    }
+    // Separar parrafos, elementos de lista, etc.
+    if (bloque.block && bloque.nesting === -1) trozos.push(" ");
+  }
+  return trozos.join("").replace(/\s+/g, " ").trim();
+};

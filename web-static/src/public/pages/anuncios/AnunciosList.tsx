@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { formatFecha } from "../../../config";
 import { softTagStyle, type TagTone } from "../../../theme";
+import { textoPlano } from "../../../markdown";
 
 type Anuncio = {
   id: string;
@@ -84,7 +85,7 @@ export function AnunciosList() {
                       whiteSpace: "nowrap",
                     }}
                   >
-                    {a.descripcion}
+                    {textoPlano(a.descripcion)}
                   </Typography.Text>
                 )}
                 <Typography.Text type="secondary" style={{ fontSize: 11 }}>

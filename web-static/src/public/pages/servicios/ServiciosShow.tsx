@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { PhoneOutlined } from "@ant-design/icons";
 import { colors, softTagStyle, type TagTone } from "../../../theme";
+import { renderMarkdown } from "../../../markdown";
 
 type Servicio = {
   id: string;
@@ -70,9 +71,11 @@ export function ServiciosShow() {
       </Tag>
       <Typography.Title level={2} style={{ marginTop: 4 }}>{s.nombre}</Typography.Title>
       {s.descripcion && (
-        <Typography.Paragraph style={{ fontSize: 15 }}>
-          {s.descripcion}
-        </Typography.Paragraph>
+        <div
+          className="vc-md"
+          style={{ fontSize: 15 }}
+          dangerouslySetInnerHTML={{ __html: renderMarkdown(s.descripcion) }}
+        />
       )}
       <Divider style={{ borderColor: colors.borde }} />
       <Descriptions column={1} size="small">

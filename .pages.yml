@@ -90,7 +90,9 @@ content:
         type: string
       - name: descripcion
         label: Descripción
-        type: text
+        type: rich-text
+        options:
+          format: markdown
       - name: logo_url
         label: Logo o foto
         type: image
@@ -162,7 +164,9 @@ content:
               label: Otro
       - name: descripcion
         label: Descripción
-        type: text
+        type: rich-text
+        options:
+          format: markdown
       - name: direccion
         label: Dirección
         type: string
@@ -215,7 +219,9 @@ content:
               label: Otro
       - name: descripcion
         label: Descripción
-        type: text
+        type: rich-text
+        options:
+          format: markdown
       - name: contacto
         label: Contacto
         description: Teléfono, email o cómo localizar a quien publica.
