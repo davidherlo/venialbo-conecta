@@ -74,7 +74,7 @@ export function NoticiasList() {
                     marginBottom: 6,
                   }}
                 >
-                  <Tag style={softTagStyleFromHex(n.categoria.color ?? "#5a7a3e")}>
+                  <Tag style={softTagStyleFromHex(n.categoria.color ?? "#487824")}>
                     {n.categoria.nombre}
                   </Tag>
                   {n.destacada && (

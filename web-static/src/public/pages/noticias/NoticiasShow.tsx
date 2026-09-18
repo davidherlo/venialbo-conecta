@@ -61,7 +61,7 @@ export function NoticiasShow() {
         />
       )}
       <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 12 }}>
-        <Tag style={softTagStyleFromHex(n.categoria.color ?? "#5a7a3e")}>{n.categoria.nombre}</Tag>
+        <Tag style={softTagStyleFromHex(n.categoria.color ?? "#487824")}>{n.categoria.nombre}</Tag>
         {n.destacada && (
           <Tag icon={<StarFilled />} style={softTagStyle("dorado")}>
             Destacada

@@ -6,7 +6,7 @@ import {
   NotificationOutlined,
   ReadOutlined,
 } from "@ant-design/icons";
-import { colors, fonts } from "../../theme";
+import { colors } from "../../theme";
 
 const SECCIONES = [
   {
@@ -23,7 +23,7 @@ const SECCIONES = [
     desc: "Directorio del comercio local",
     to: "/negocios",
     color: colors.terracota,
-    bg: "#fbe9df",
+    bg: "#f9eae2",
   },
   {
     icon: <MedicineBoxOutlined />,
@@ -39,7 +39,7 @@ const SECCIONES = [
     desc: "Anuncios entre vecinos",
     to: "/tablon",
     color: colors.dorado,
-    bg: "#faf0d8",
+    bg: "#fbf3e0",
   },
 ];
 
@@ -47,72 +47,44 @@ export function Home() {
   return (
     <div>
       <section
+        className="vc-hero"
         style={{
-          position: "relative",
-          textAlign: "center",
-          padding: "96px 24px 104px",
-          backgroundImage: `url('${import.meta.env.BASE_URL}venialbo-hero.jpg')`,
-          backgroundSize: "cover",
-          backgroundPosition: "center 60%",
+          background: colors.blanco,
           borderRadius: 20,
           marginBottom: 40,
-          overflow: "hidden",
           border: `1px solid ${colors.borde}`,
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: `linear-gradient(180deg, rgba(61, 47, 31, 0.35) 0%, rgba(74, 103, 48, 0.55) 100%)`,
-          }}
+        <img
+          src={`${import.meta.env.BASE_URL}venialbo-conecta.webp`}
+          alt="VenialboConecta"
         />
-        <div style={{ position: "relative", zIndex: 1 }}>
+        <div style={{ maxWidth: 460 }}>
           <Typography.Title
+            level={1}
             style={{
-              fontFamily: fonts.serif,
-              fontSize: "clamp(2.2rem, 5.5vw, 3.6rem)",
+              fontSize: "clamp(1.7rem, 4vw, 2.4rem)",
               fontWeight: 600,
-              color: "#fff",
+              color: colors.musgo,
               margin: 0,
-              marginBottom: 14,
+              marginBottom: 12,
               letterSpacing: "-0.02em",
-              textShadow: "0 2px 12px rgba(0, 0, 0, 0.4)",
             }}
           >
-            Bienvenido a Venialbo
+            Tu portal vecinal
           </Typography.Title>
           <Typography.Text
             style={{
-              fontSize: 18,
-              color: "rgba(255, 255, 255, 0.95)",
+              fontSize: 17,
+              color: colors.marronSuave,
               display: "block",
-              maxWidth: 580,
-              margin: "0 auto",
-              lineHeight: 1.5,
-              textShadow: "0 1px 6px rgba(0, 0, 0, 0.4)",
+              lineHeight: 1.55,
             }}
           >
-            Tu portal vecinal — noticias, negocios, servicios y un tablón para
-            compartir lo que pasa en el pueblo.
+            Noticias, negocios, servicios y un tablón para compartir lo que pasa
+            en el pueblo.
           </Typography.Text>
         </div>
-        <a
-          href="https://commons.wikimedia.org/wiki/File:Margen_izquierda_del_R%C3%8DO_Y_AYUNTAMIENTO.jpg"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            position: "absolute",
-            right: 10,
-            bottom: 8,
-            fontSize: 10,
-            color: "rgba(255, 255, 255, 0.7)",
-            textShadow: "0 1px 3px rgba(0, 0, 0, 0.6)",
-            zIndex: 1,
-          }}
-        >
-          © Ángel Encinas Carazo · CC BY-SA 4.0
-        </a>
       </section>
 
       <Row gutter={[20, 20]}>
@@ -160,6 +132,43 @@ export function Home() {
           </Col>
         ))}
       </Row>
+
+      <Link
+        to="/pueblos-conectados"
+        className="vc-card-link"
+        style={{ marginTop: 20 }}
+      >
+        <Card
+          styles={{ body: { padding: 24 } }}
+          style={{ border: `1px solid ${colors.borde}` }}
+        >
+          <div className="vc-banda">
+            <img
+              src={`${import.meta.env.BASE_URL}pueblos-conectados-icono.webp`}
+              alt=""
+            />
+            <div>
+              <Typography.Title
+                level={3}
+                style={{
+                  margin: 0,
+                  marginBottom: 6,
+                  fontSize: 20,
+                  color: colors.marronTexto,
+                }}
+              >
+                Pueblos Conectados
+              </Typography.Title>
+              <Typography.Text
+                style={{ fontSize: 14, color: colors.marronSuave }}
+              >
+                Un proyecto colaborativo entre las localidades de Venialbo
+                (Zamora) y Aldearrubia (Salamanca).
+              </Typography.Text>
+            </div>
+          </div>
+        </Card>
+      </Link>
     </div>
   );
 }

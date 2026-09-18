@@ -19,6 +19,7 @@ import { ServiciosList } from "./public/pages/servicios/ServiciosList";
 import { ServiciosShow } from "./public/pages/servicios/ServiciosShow";
 import { AnunciosList } from "./public/pages/anuncios/AnunciosList";
 import { AnunciosShow } from "./public/pages/anuncios/AnunciosShow";
+import { PueblosConectados } from "./public/pages/PueblosConectados";
 import { NotFound } from "./pages/NotFound";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
               <Route path="/servicios/:id" element={<ServiciosShow />} />
               <Route path="/tablon" element={<AnunciosList />} />
               <Route path="/tablon/:id" element={<AnunciosShow />} />
+              <Route path="/pueblos-conectados" element={<PueblosConectados />} />
             </Route>
             {/* 404 */}
             <Route path="*" element={<NotFound />} />

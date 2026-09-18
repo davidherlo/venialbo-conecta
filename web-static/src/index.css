@@ -30,6 +30,59 @@ a:hover {
   background: rgba(90, 122, 62, 0.2);
 }
 
+.vc-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  padding: 40px 32px;
+}
+
+.vc-hero img {
+  width: 210px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+/* En móvil el logo y el lema no caben en paralelo: se apilan y se centran */
+@media (max-width: 640px) {
+  .vc-hero {
+    flex-direction: column;
+    gap: 20px;
+    padding: 32px 20px;
+    text-align: center;
+  }
+
+  .vc-hero img {
+    width: 160px;
+  }
+}
+
+/* Banda ancha de Pueblos Conectados, bajo la rejilla de secciones */
+.vc-banda {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.vc-banda img {
+  width: 96px;
+  height: auto;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .vc-banda {
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+  }
+
+  .vc-banda img {
+    width: 76px;
+  }
+}
+
 .vc-card-link {
   display: block;
   height: 100%;

@@ -1,0 +1,128 @@
+"""Genera los assets de web-static/public a partir de los JPEG de esta carpeta.
+
+Quita el fondo blanco de los originales y produce:
+
+    favicon.png           32x32, transparente
+    apple-touch-icon.png  180x180, opaco (iOS ignora el alfa)
+    venialbo-conecta.webp logo de la portada, resolucion completa
+
+Uso (necesita Pillow, que no esta instalado en el sistema):
+
+    python3 -m venv .venv-assets
+    .venv-assets/bin/pip install Pillow
+    .venv-assets/bin/python generar-assets.py
+"""
+
+from pathlib import Path
+
+from PIL import Image
+
+AQUI = Path(__file__).resolve().parent
+PUB = AQUI.parent / "web-static" / "public"
+
+# Contenido real de cada original, medido ignorando el ruido del JPEG. Si se
+# cambia un original hay que volver a medirlo (ver medir_bbox() al final).
+BBOX_ICONO = (97, 126, 733, 685)  # Logo_Pueblos.jpeg, 827x827
+BBOX_LOGO = (49, 79, 1210, 1197)  # Venialbo_Conecta.jpeg, 1254x1254
+# Logo_Pueblos_conectados.jpeg (1254x1254) se usa de dos formas: el lockup
+# entero en su pagina y solo el icono en la tarjeta de portada y el menu.
+BBOX_CONECTADOS = (244, 127, 1022, 1065)
+BBOX_CONECTADOS_ICONO = (316, 127, 952, 686)
+
+# Rampa de opacidad: por debajo de LO es fondo (el blanco del JPEG no es 255
+# puro y trae ruido de compresion), por encima de HI es icono solido. Entre
+# medias queda el antialias del borde.
+LO, HI = 14, 48
+
+
+def sin_fondo(ruta, bbox, margen=0):
+    """Abre un JPEG, recorta al contenido y devuelve un RGBA sin el blanco."""
+    src = Image.open(ruta).convert("RGB")
+    x0, y0, x1, y1 = bbox
+    recorte = src.crop((x0 - margen, y0 - margen, x1 + margen, y1 + margen))
+
+    ancho, alto = recorte.size
+    px = recorte.load()
+    rgba = Image.new("RGBA", recorte.size)
+    out = rgba.load()
+
+    for y in range(alto):
+        for x in range(ancho):
+            r, g, b = px[x, y]
+            # Distancia al blanco: el canal mas oscuro marca cuanto color hay.
+            d = 255 - min(r, g, b)
+            if d <= LO:
+                out[x, y] = (0, 0, 0, 0)
+                continue
+            a = 255 if d >= HI else round((d - LO) / (HI - LO) * 255)
+            if a < 255:
+                # El pixel viene mezclado con el blanco del fondo. Deshacer la
+                # mezcla evita el halo claro al ponerlo sobre un fondo oscuro.
+                f = a / 255
+                r, g, b = (
+                    min(255, max(0, round((c - 255 * (1 - f)) / f))) for c in (r, g, b)
+                )
+            out[x, y] = (r, g, b, a)
+
+    return rgba
+
+
+def cuadrar(rgba, aire=1.12):
+    """Centra la imagen en un lienzo cuadrado transparente con algo de aire."""
+    lado = round(max(rgba.size) * aire)
+    lienzo = Image.new("RGBA", (lado, lado), (0, 0, 0, 0))
+    lienzo.paste(rgba, ((lado - rgba.width) // 2, (lado - rgba.height) // 2))
+    return lienzo
+
+
+def medir_bbox(ruta):
+    """Ayuda para recalcular el BBOX si se sustituye un original."""
+    from PIL import ImageChops
+
+    im = Image.open(ruta).convert("RGB")
+    blanco = Image.new("RGB", im.size, (255, 255, 255))
+    mascara = ImageChops.difference(im, blanco).convert("L")
+    return mascara.point(lambda p: 255 if p > 18 else 0).getbbox()
+
+
+def main():
+    # Favicon: el icono a 32px necesita ocupar todo lo posible, de ahi el
+    # recorte del margen blanco antes de escalar.
+    icono = cuadrar(sin_fondo(AQUI / "Logo_Pueblos.jpeg", BBOX_ICONO))
+    icono.resize((32, 32), Image.LANCZOS).save(PUB / "favicon.png", optimize=True)
+
+    # iOS ignora el canal alfa y compone sobre negro, asi que el
+    # apple-touch-icon se entrega ya opaco sobre el blanco del diseno original.
+    touch = Image.new("RGB", icono.size, (255, 255, 255))
+    touch.paste(icono, mask=icono.split()[3])
+    touch.resize((180, 180), Image.LANCZOS).save(
+        PUB / "apple-touch-icon.png", optimize=True
+    )
+
+    # Logo de portada: se muestra a 210px, pero se deja a resolucion completa
+    # para que aguante el zoom del navegador. WebP con alfa comprime los
+    # degradados mucho mejor que PNG (162 KB frente a 655 KB) sin diferencia
+    # visible en los bordes.
+    logo = sin_fondo(AQUI / "Venialbo_Conecta.jpeg", BBOX_LOGO, margen=8)
+    logo.save(PUB / "venialbo-conecta.webp", "WEBP", quality=88, method=6)
+
+    # Pueblos Conectados: el icono suelto para la tarjeta de la portada (se ve
+    # a ~96px, 300 basta de sobra) y el lockup entero para su propia pagina.
+    icono_pc = cuadrar(
+        sin_fondo(AQUI / "Logo_Pueblos_conectados.jpeg", BBOX_CONECTADOS_ICONO)
+    )
+    icono_pc.thumbnail((300, 300), Image.LANCZOS)
+    icono_pc.save(PUB / "pueblos-conectados-icono.webp", "WEBP", quality=90, method=6)
+
+    lockup = sin_fondo(AQUI / "Logo_Pueblos_conectados.jpeg", BBOX_CONECTADOS, margen=8)
+    lockup.save(PUB / "pueblos-conectados.webp", "WEBP", quality=88, method=6)
+
+    print("favicon.png 32x32")
+    print("apple-touch-icon.png 180x180")
+    print(f"venialbo-conecta.webp {logo.width}x{logo.height}")
+    print(f"pueblos-conectados-icono.webp {icono_pc.width}x{icono_pc.height}")
+    print(f"pueblos-conectados.webp {lockup.width}x{lockup.height}")
+
+
+if __name__ == "__main__":
+    main()

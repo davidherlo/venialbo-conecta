@@ -1,17 +1,21 @@
 import type { CSSProperties } from "react";
 import type { ThemeConfig } from "antd";
 
+// Los tres colores de marca salen muestreados del logo de la portada: el verde
+// del wordmark VENIALBO, el dorado de CONECTA y la terracota de la casa (que
+// es un degradado de #f0a010 a #a00018, asi que se toma su media). Las cremas y
+// los marrones son neutros de apoyo y no salen del logo.
 export const colors = {
-  musgo: "#5a7a3e",
-  musgoClaro: "#7a9a5e",
-  musgoFondo: "#eef2e6",
-  terracota: "#c87856",
-  terracotaOscuro: "#a85e3e",
+  musgo: "#487824",
+  musgoClaro: "#7fa066",
+  musgoFondo: "#edf2e9",
+  terracota: "#d05211",
+  terracotaOscuro: "#b1460e",
   crema: "#faf6ef",
   cremaOscuro: "#f0e9d8",
   marronTexto: "#3d2f1f",
   marronSuave: "#6b5a44",
-  dorado: "#d4a04c",
+  dorado: "#de9c00",
   borde: "#e8e0d0",
   blanco: "#ffffff",
 };
@@ -24,9 +28,9 @@ export const fonts = {
 export type TagTone = "musgo" | "terracota" | "dorado" | "lila" | "rojo" | "azul" | "gris";
 
 export const tagTones: Record<TagTone, { bg: string; color: string }> = {
-  musgo: { bg: "#eef2e6", color: "#4a6730" },
-  terracota: { bg: "#fbe9df", color: "#a85e3e" },
-  dorado: { bg: "#faf0d8", color: "#9b7a2a" },
+  musgo: { bg: "#edf2e9", color: "#416c20" },
+  terracota: { bg: "#f9eae2", color: "#b1460e" },
+  dorado: { bg: "#fbf3e0", color: "#906500" },
   lila: { bg: "#efe8f7", color: "#6b4d99" },
   rojo: { bg: "#f9e0e0", color: "#b03030" },
   azul: { bg: "#e0eaf2", color: "#3d6691" },

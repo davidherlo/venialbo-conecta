@@ -6,6 +6,9 @@
 backend/.venv/
 backend/venv/
 
+# Entorno virtual del generador de assets (ver assets-src/README.md)
+assets-src/.venv-assets/
+
 # Base de datos SQLite
 backend/*.db
 

@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { key: "/negocios", label: "Negocios" },
   { key: "/servicios", label: "Servicios" },
   { key: "/tablon", label: "Tablón" },
+  { key: "/pueblos-conectados", label: "Pueblos Conectados" },
 ];
 
 export function PublicLayout() {
